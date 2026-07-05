@@ -181,6 +181,11 @@ async function dbAuditLog(db, action, actorUserId, details) {
   await db.prepare('INSERT INTO audit_logs (id,actor_user_id,action,details,created_at) VALUES (?,?,?,?,?)').bind(await randomId(12), actorUserId || null, action, details || null, new Date().toISOString()).run();
 }
 
+async function cleanupSessions(db) {
+  const threshold = new Date(Date.now() - SCRIPT_POLL_WINDOW_MS).toISOString();
+  await db.prepare('UPDATE script_sessions SET online=0, game=NULL WHERE online=1 AND last_seen_at < ?').bind(threshold).run();
+}
+
 async function dbUpsertSession(db, userId) {
   let s = await dbSession(db, userId);
   if (!s) {
@@ -201,12 +206,16 @@ async function buildHomePayload(db, user) {
   const loaderCmd = licKeyStr
     ? `local l="${licKeyStr}";local u={"${targets.join('","')}"};for _,b in ipairs(u) do local ok,s=pcall(function() return game:HttpGet(b.."/api/script/loader?license="..l) end) if ok and s and #s>0 then return loadstring(s)() end end error("LUXX local loader unreachable")`
     : "print('No license key found')";
+  const now = Date.now();
+  const lastSeen = session?.lastSeenAt ? new Date(session.lastSeenAt).getTime() : 0;
+  const isTrulyConnected = session?.online && session?.lastSeenAt && (now - lastSeen) < SCRIPT_POLL_WINDOW_MS;
+
   return {
     user: publicUser(user, licKeyStr),
     home: {
-      scriptConnected: Boolean(session && session.online),
-      gameFound: session ? session.game : null,
-      executor: session ? session.executor : null,
+      scriptConnected: isTrulyConnected,
+      gameFound: isTrulyConnected && session?.game ? session.game : null,
+      executor: isTrulyConnected ? session?.executor : null,
       sessionCode: session ? session.sessionCode : null,
       lastSeenAt: session ? session.lastSeenAt : null,
       activeConfigId: activeConf ? activeConf.id : null,
@@ -237,6 +246,7 @@ export async function onRequest(context) {
   try {
     await ensureSchema(db);
     await seedIfNeeded(db);
+    await cleanupSessions(db);
   } catch (e) {
     return new Response(JSON.stringify({ error: 'DB init failed: ' + e.message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
@@ -603,6 +613,17 @@ export async function onRequest(context) {
     await db.prepare('UPDATE script_sessions SET online=1,game=?,executor=?,version=?,last_seen_at=?,updated_at=? WHERE user_id=?').bind(game || 'Unknown Game', executor || 'Unknown Executor', version || null, now, now, user.id).run();
     const activeConf = rowToConfig(await db.prepare('SELECT * FROM configs WHERE owner_id=? AND is_active=1 LIMIT 1').bind(user.id).first());
     return json(200, { ok: true, userId: user.id, activeConfigId: activeConf ? activeConf.id : null, activeConfigName: activeConf ? activeConf.name : null, activeConfigUpdatedAt: activeConf ? activeConf.updatedAt : null, activeConfigLua: activeConf ? injectLicenseIntoLua(activeConf.luaContent, licKey) : null, canOpenPanel: Boolean(activeConf) });
+  }
+
+  // ── Script Disconnect ───────────────────────────────────────────────────
+  if (pathname === '/script/disconnect' && method === 'POST') {
+    const b = await getBody();
+    const licKey = String(b.licenseKey || request.headers.get('x-luxx-license') || '').trim().toUpperCase();
+    if (!licKey) return json(400, { error: 'License key is required' });
+    const license = await dbLicenseByHash(db, await hashLicenseKey(licKey));
+    if (!license || !license.claimedByUserId) return json(403, { error: 'License is not linked to a user account' });
+    await db.prepare('UPDATE script_sessions SET online=0, game=NULL, updated_at=? WHERE user_id=?').bind(new Date().toISOString(), license.claimedByUserId).run();
+    return json(200, { ok: true });
   }
 
   // ── Script Status ─────────────────────────────────────────────────────────

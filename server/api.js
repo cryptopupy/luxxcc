@@ -751,6 +751,31 @@ export function luxxApiPlugin() {
           return json(res, payload.status, payload.body);
         }
 
+        if (pathname === "/script/disconnect" && req.method === "POST") {
+          const body = await readBody(req);
+          const licenseKey = String(body.licenseKey || req.headers["x-luxx-license"] || "").trim().toUpperCase();
+          if (!licenseKey) {
+            return json(res, 400, { error: "License key is required" });
+          }
+          let payload = null;
+          updateState((state) => {
+            const license = state.licenseKeys.find((item) => item.keyHash === hashLicenseKey(licenseKey));
+            if (!license || !license.claimedByUserId) {
+              payload = { status: 403, body: { error: "License is not linked to a user account" } };
+              return state;
+            }
+            const session = state.scriptSessions.find((item) => item.userId === license.claimedByUserId);
+            if (session) {
+              session.online = false;
+              session.game = null;
+              session.updatedAt = new Date().toISOString();
+            }
+            payload = { status: 200, body: { ok: true } };
+            return state;
+          });
+          return json(res, payload.status, payload.body);
+        }
+
         if (pathname === "/script/loader" && req.method === "GET") {
           const licenseKey = String(url.searchParams.get("license") || url.searchParams.get("licenseKey") || "").trim().toUpperCase();
           if (!licenseKey) {
