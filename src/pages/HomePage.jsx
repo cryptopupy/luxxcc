@@ -35,7 +35,7 @@ export default function HomePage() {
     };
 
     refresh(true);
-    const timer = window.setInterval(() => refresh(false), 15000);
+    const timer = window.setInterval(() => refresh(false), 3000);
     return () => window.clearInterval(timer);
   }, []);
 
@@ -177,21 +177,21 @@ function ActionTile({
 
 function SignalBars() {
   return (
-    <div className="mx-auto flex h-12 items-end justify-center gap-2">
-      {[12, 18, 28, 38, 40].map((height, index) => (
+    <div className="mx-auto flex h-10 items-center justify-center gap-3">
+      {[1, 2, 3, 4].map((_, index) => (
         <motion.span
-          key={height}
-          className="w-[6px] rounded-full bg-[linear-gradient(180deg,#2d5ea0,#75b4ff)]"
-          initial={{ height: Math.max(10, height - 12), opacity: 0.35 }}
+          key={index}
+          className="w-2 rounded-full bg-[#69b0ff]"
+          initial={{ height: 8, opacity: 0.3 }}
           animate={{
-            height: [Math.max(10, height - 12), height, Math.max(12, height - 6)],
-            opacity: [0.35, 1, 0.55],
+            height: [8, 20, 8],
+            opacity: [0.3, 1, 0.3],
           }}
           transition={{
-            duration: 0.9,
+            duration: 0.8,
             repeat: Infinity,
-            repeatType: "reverse",
-            delay: index * 0.08,
+            repeatType: "loop",
+            delay: index * 0.15,
             ease: "easeInOut",
           }}
         />

@@ -105,6 +105,7 @@ function buildHomePayload(state, user) {
   const session = state.scriptSessions.find((item) => item.userId === user.id) || null;
   const viewerLicenseKey = resolveLicenseKeyValue(state.licenseKeys, user.licenseKeyId);
   const loaderTargets = [
+    "https://luxxcc.pages.dev",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "http://[::1]:5173",

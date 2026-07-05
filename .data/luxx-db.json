@@ -1,7 +1,7 @@
 {
   "meta": {
     "createdAt": "2026-07-04T16:44:53.910Z",
-    "updatedAt": "2026-07-05T10:51:03.118Z",
+    "updatedAt": "2026-07-05T12:44:18.207Z",
     "scriptPollingWindowMs": 90000
   },
   "panelDefaults": {
@@ -16,13 +16,13 @@
     {
       "id": "ed01e13fede0f0d62c6e15d393d0e33c",
       "email": "admin",
-      "passwordHash": "120000:cfe2ff5461e6c4d37ce0d311b58f184e:bf4809a0f46d53c8c28800b590bea6c0ae34ed5e58b1e986f19e91f669ae37cf",
+      "passwordHash": "120000:25de41e5d5b46ad7b62e5b857ae1b489:37ff8db51532bb7f9b4536fb5c8476477ffdf47aa7f7687a191be52b2e981024",
       "displayName": "Luxx Admin",
       "role": "admin",
       "isBanned": false,
       "licenseKeyId": "3f15b7bf4b887c3c9acc0ba909e82606",
       "createdAt": "2026-07-04T16:44:54.028Z",
-      "updatedAt": "2026-07-05T10:20:32.057Z",
+      "updatedAt": "2026-07-05T12:37:32.192Z",
       "lastLoginAt": "2026-07-05T10:20:32.057Z"
     }
   ],
@@ -76,13 +76,13 @@
       "id": "fc12a8ab6e8278a54cf9d514d55e65d7",
       "userId": "ed01e13fede0f0d62c6e15d393d0e33c",
       "sessionCode": "17F7AC0D8F94B3D8",
-      "online": false,
+      "online": true,
       "game": "Da Hood",
       "executor": "Solara",
       "version": null,
-      "lastSeenAt": "2026-07-04T18:32:21.148Z",
+      "lastSeenAt": "2026-07-05T12:44:18.205Z",
       "createdAt": "2026-07-04T16:45:31.249Z",
-      "updatedAt": "2026-07-04T18:32:21.148Z"
+      "updatedAt": "2026-07-05T12:44:18.205Z"
     }
   ],
   "auditLogs": [
