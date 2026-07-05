@@ -1,7 +1,7 @@
 {
   "meta": {
     "createdAt": "2026-07-04T16:44:53.910Z",
-    "updatedAt": "2026-07-05T09:37:24.286Z",
+    "updatedAt": "2026-07-05T10:33:30.730Z",
     "scriptPollingWindowMs": 90000
   },
   "panelDefaults": {
@@ -22,8 +22,8 @@
       "isBanned": false,
       "licenseKeyId": "3f15b7bf4b887c3c9acc0ba909e82606",
       "createdAt": "2026-07-04T16:44:54.028Z",
-      "updatedAt": "2026-07-05T09:22:28.411Z",
-      "lastLoginAt": "2026-07-05T09:22:28.411Z"
+      "updatedAt": "2026-07-05T10:20:32.057Z",
+      "lastLoginAt": "2026-07-05T10:20:32.057Z"
     }
   ],
   "licenseKeys": [
@@ -86,6 +86,13 @@
     }
   ],
   "auditLogs": [
+    {
+      "id": "b93d295538a7570271dcfcbfa43b7925",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "auth.login",
+      "details": "Signed in from Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0",
+      "createdAt": "2026-07-05T10:20:32.057Z"
+    },
     {
       "id": "bfd387db554aa57c834315f6e6669120",
       "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
