@@ -104,6 +104,12 @@ function buildHomePayload(state, user) {
   const activeConfig = state.configs.find((config) => config.ownerId === user.id && config.isActive) || null;
   const session = state.scriptSessions.find((item) => item.userId === user.id) || null;
   const viewerLicenseKey = resolveLicenseKeyValue(state.licenseKeys, user.licenseKeyId);
+  
+  // Strictly check if session is truly connected
+  const now = Date.now();
+  const lastSeen = session?.lastSeenAt ? new Date(session.lastSeenAt).getTime() : 0;
+  const isTrulyConnected = session?.online && (now - lastSeen) <= SCRIPT_POLL_WINDOW_MS;
+  
   const loaderTargets = [
     "https://luxxcc.pages.dev",
     "http://localhost:5173",
@@ -114,9 +120,9 @@ function buildHomePayload(state, user) {
   return {
     user: publicUser(user, state.licenseKeys),
     home: {
-      scriptConnected: Boolean(session?.online),
-      gameFound: session?.game ? session.game : null,
-      executor: session?.executor || null,
+      scriptConnected: isTrulyConnected,
+      gameFound: isTrulyConnected && session?.game ? session.game : null,
+      executor: isTrulyConnected ? session?.executor || null : null,
       sessionCode: session?.sessionCode || null,
       lastSeenAt: session?.lastSeenAt || null,
       activeConfigId: activeConfig?.id || null,
