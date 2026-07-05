@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plus, Search, Settings2, Trash2, Upload } from "lucide-react";
+import { Plus, RefreshCcw, Save, Search, Settings2, Trash2, Upload } from "lucide-react";
 import ConfigCard from "@/components/ConfigCard";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import { api } from "@/api/client";
+import Editor from "react-simple-code-editor";
+import Prism from "prismjs";
+import "prismjs/components/prism-lua";
 
 const TIERS = ["All", "Legit", "Semi-Legit", "Blatant", "Rage", "Custom"];
+const CONFIG_TIERS = ["Legit", "Semi-Legit", "Blatant", "Rage", "Custom"];
 const VISIBILITY = ["private", "public", "premium"];
 
 export default function Configs() {
@@ -21,13 +25,33 @@ export default function Configs() {
   const [showCreate, setShowCreate] = useState(false);
   const [editingConfig, setEditingConfig] = useState(null);
 
+  // Dashboard config state
+  const [dashboardDefault, setDashboardDefault] = useState(null);
+  const [dashboardTitle, setDashboardTitle] = useState("");
+  const [dashboardTier, setDashboardTier] = useState("Custom");
+  const [dashboardDescription, setDashboardDescription] = useState("");
+  const [dashboardLua, setDashboardLua] = useState("");
+  const [dashboardSaving, setDashboardSaving] = useState(false);
+
   const loadData = async () => {
     setLoading(true);
     try {
-      const payload = await api.get("/configs");
-      setMarketplace(payload.marketplace || []);
-      setMyConfigs(payload.myConfigs || []);
-      setPurchases(payload.purchases || []);
+      const [configPayload, homePayload] = await Promise.all([
+        api.get("/configs"),
+        api.get("/home"),
+      ]);
+      setMarketplace(configPayload.marketplace || []);
+      setMyConfigs(configPayload.myConfigs || []);
+      setPurchases(configPayload.purchases || []);
+
+      const dd = homePayload.home?.dashboardDefault || null;
+      setDashboardDefault(dd);
+      if (dd) {
+        setDashboardTitle(dd.dashboardTitle || "");
+        setDashboardTier(dd.dashboardTier || "Custom");
+        setDashboardDescription(dd.dashboardDescription || "");
+        setDashboardLua(dd.dashboardLuaContent || "");
+      }
     } finally {
       setLoading(false);
     }
@@ -87,6 +111,37 @@ export default function Configs() {
     await loadData();
   };
 
+  const handleSaveDashboard = async () => {
+    if (!dashboardTitle.trim() || !dashboardTier || !dashboardLua.trim()) {
+      toast({ title: "Missing fields", description: "Title, tier, and Lua content are required.", variant: "destructive" });
+      return;
+    }
+    setDashboardSaving(true);
+    try {
+      await api.put("/admin/panel-defaults", {
+        dashboardTitle: dashboardTitle.trim(),
+        dashboardTier,
+        dashboardDescription,
+        dashboardLuaContent: dashboardLua,
+      });
+      toast({ title: "Dashboard config saved", description: "Panel defaults updated." });
+      await loadData();
+    } catch (err) {
+      toast({ title: "Save failed", description: err?.message || "An error occurred.", variant: "destructive" });
+    } finally {
+      setDashboardSaving(false);
+    }
+  };
+
+  const resetDashboardFields = () => {
+    if (!dashboardDefault) return;
+    setDashboardTitle(dashboardDefault.dashboardTitle || "");
+    setDashboardTier(dashboardDefault.dashboardTier || "Custom");
+    setDashboardDescription(dashboardDefault.dashboardDescription || "");
+    setDashboardLua(dashboardDefault.dashboardLuaContent || "");
+    toast({ title: "Reverted", description: "Fields reset to last saved values." });
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-24">
@@ -98,7 +153,7 @@ export default function Configs() {
   return (
     <div className="space-y-5">
       <div className="flex w-fit gap-2 border border-white/10 bg-[#101927] p-1">
-        {["marketplace", "my"].map((tabId) => (
+        {["marketplace", "my", "dashboard"].map((tabId) => (
           <button
             key={tabId}
             onClick={() => setTab(tabId)}
@@ -106,7 +161,7 @@ export default function Configs() {
               tab === tabId ? "bg-[#16233d] text-[#8ebfff]" : "text-[#8190ab]"
             }`}
           >
-            {tabId === "marketplace" ? "Marketplace" : "My Configs"}
+            {tabId === "marketplace" ? "Marketplace" : tabId === "my" ? "My Configs" : "Dashboard Config"}
           </button>
         ))}
       </div>
@@ -156,7 +211,7 @@ export default function Configs() {
               </div>
             )}
           </motion.div>
-        ) : (
+        ) : tab === "my" ? (
           <motion.div key="my" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} className="space-y-4">
             <div className="flex items-center justify-between border border-white/10 bg-[#101927] p-5">
               <div>
@@ -214,6 +269,90 @@ export default function Configs() {
                 ))}
               </div>
             )}
+          </motion.div>
+        ) : (
+          <motion.div key="dashboard" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} className="space-y-4">
+            {/* Header bar */}
+            <div className="flex items-center justify-between border border-white/10 bg-[#101927] p-5">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#7f8ba6]">Dashboard Config</p>
+                <p className="mt-2 text-sm text-[#93a1bf]">Edit the default panel config served to all connected scripts.</p>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={resetDashboardFields}
+                  className="flex items-center gap-2 border border-white/10 bg-white/[0.03] px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#c3d1ea]"
+                >
+                  <RefreshCcw size={13} />
+                  Revert
+                </button>
+                <button
+                  onClick={handleSaveDashboard}
+                  disabled={dashboardSaving}
+                  className={`flex items-center gap-2 border border-[#355287] bg-[#13203b] px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#d7e6ff] ${dashboardSaving ? "pointer-events-none opacity-50" : ""}`}
+                >
+                  <Save size={13} />
+                  {dashboardSaving ? "Saving..." : "Save"}
+                </button>
+              </div>
+            </div>
+
+            {/* Meta fields */}
+            <div className="grid gap-4 border border-white/10 bg-[#101927] p-5 md:grid-cols-3">
+              <div>
+                <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.28em] text-[#7f8ba6]">Title</label>
+                <input
+                  value={dashboardTitle}
+                  onChange={(e) => setDashboardTitle(e.target.value)}
+                  className="w-full border border-white/10 bg-[#09101a] px-4 py-3 text-sm text-white placeholder:text-[#41506d] focus:border-[#3e5f98] focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.28em] text-[#7f8ba6]">Tier</label>
+                <select
+                  value={dashboardTier}
+                  onChange={(e) => setDashboardTier(e.target.value)}
+                  className="w-full border border-white/10 bg-[#09101a] px-4 py-3 text-sm text-white focus:border-[#3e5f98] focus:outline-none"
+                >
+                  {CONFIG_TIERS.map((t) => <option key={t} value={t}>{t}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.28em] text-[#7f8ba6]">Description</label>
+                <input
+                  value={dashboardDescription}
+                  onChange={(e) => setDashboardDescription(e.target.value)}
+                  className="w-full border border-white/10 bg-[#09101a] px-4 py-3 text-sm text-white placeholder:text-[#41506d] focus:border-[#3e5f98] focus:outline-none"
+                />
+              </div>
+            </div>
+
+            {/* Lua editor */}
+            <div className="border border-white/10 overflow-hidden">
+              <div className="border-b border-white/10 bg-[#101927] px-5 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#7f8ba6]">Lua Content</p>
+              </div>
+              <div
+                style={{ height: "60vh", overflowY: "auto", overflowX: "auto" }}
+                className="editor-scrollbar"
+              >
+                <Editor
+                  value={dashboardLua}
+                  onValueChange={(code) => setDashboardLua(code)}
+                  highlight={(code) => Prism.highlight(code, Prism.languages.lua, "lua")}
+                  padding={24}
+                  className="font-mono text-xs leading-[1.72]"
+                  style={{ backgroundColor: "#131825", fontFamily: '"Fira Code", "Fira Mono", monospace', minHeight: "100%" }}
+                  spellCheck={false}
+                />
+              </div>
+              <style>{`
+                .editor-scrollbar::-webkit-scrollbar { width: 10px; height: 10px; }
+                .editor-scrollbar::-webkit-scrollbar-track { background: #0f1420; }
+                .editor-scrollbar::-webkit-scrollbar-thumb { background: #2d3a52; }
+                .editor-scrollbar::-webkit-scrollbar-thumb:hover { background: #3d4a62; }
+              `}</style>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
