@@ -3,7 +3,7 @@
    Binding: LUXX_DB (D1)  |  Env: LUXX_SESSION_SECRET
    ============================================================ */
 
-const ITERATIONS        = 120000;
+const ITERATIONS        = 100000;
 const SESSION_TTL_MS    = 1000 * 60 * 60 * 24 * 7;
 const SCRIPT_POLL_WINDOW_MS = 10000;
 
