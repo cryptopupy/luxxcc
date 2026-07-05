@@ -1,0 +1,224 @@
+{
+  "meta": {
+    "createdAt": "2026-07-04T16:44:53.910Z",
+    "updatedAt": "2026-07-04T18:36:53.604Z",
+    "scriptPollingWindowMs": 90000
+  },
+  "panelDefaults": {
+    "dashboardTitle": "LUXX",
+    "dashboardTier": "Custom",
+    "dashboardDescription": "Bundled LUXX config synced from luxx.lua.",
+    "dashboardLuaContent": "shared.luxxcc = {\n\n\t['Globals'] = {\n\t\t['Key'] = \"ADMIN-INTERNAL-KEY\",\n\t\t['Config Mode'] = \"Cloud\", -- Cloud / File\n\n\t\t['Brand'] = {\n\t\t\t['Enabled'] = true,\n\t\t\t['Feature'] = Color3.fromRGB(200, 200, 200),\n\t\t\t['Target'] = Color3.fromRGB(90, 90, 90),\n\t\t\t['Position'] = 'Low Center', -- Low Center / Top Center / Left Center / Right Center / Top Left / Top Right / Bottom Left / Bottom Right\n\t\t},\n\t},\n\n\t['Silent Aim'] = {\n\t\t['Enabled'] = true,\n\t\t['Max Range'] = math.huge,\n\t\t['Selection'] = 'Target', -- Automatic / Target\n\n\t\t['Bind'] = {\n\t\t\t['Key'] = 'C',\n\t\t\t['Type'] = 'toggle',\n\t\t},\n\n\t\t['Target Bind'] = {\n\t\t\t['Key'] = 'C',\n\t\t},\n\n\t\t['Checks'] = {\n\t\t\t['Alive'] = true,\n\t\t\t['Knocked'] = true,\n\t\t\t['Grabbed'] = true,\n\t\t\t['Vehicle'] = true,\n\t\t\t['Visible'] = true,\n\t\t\t['Tool'] = false,\n\t\t\t['Self Knocked'] = false,\n\t\t\t['Typing'] = true,\n\t\t\t['Crew'] = true,\n\t\t},\n\n\t\t['Target Tracer'] = {\n\t\t\t['Enabled'] = true,\n\t\t\t['Color'] = Color3.fromRGB(0, 0, 0),\n\t\t},\n\n\t\t['FOV'] = {\n\t\t\t['Enabled'] = false,\n\t\t\t['Visible'] = false,\n\n\t\t\t['Shape'] = '2D Box', -- Circle / 2D Box\n\n\t\t\t['Circle'] = {\n\t\t\t\t['Size'] = math.huge,\n\t\t\t},\n\n\t\t\t['Box'] = {\n\t\t\t\t['Width'] = math.huge,\n\t\t\t\t['Height'] = math.huge,\n\t\t\t},\n\t\t},\n\n\t\t['Target Part'] = {\n\t\t\t['Part'] = 'Closest Point', -- Head / HumanoidRootPart / Closest Part / Closest Point\n\t\t},\n\n\t\t['Prediction'] = {\n\t\t\t['Enabled'] = false,\n\t\t\t['Values'] = {\n\t\t\t\t['X'] = 0.13,\n\t\t\t\t['Y'] = 0.13,\n\t\t\t\t['Z'] = 0.13,\n\t\t\t},\n\t\t},\n\n\t\t['Auto Shoot'] = {\n\t\t\t['Enabled'] = false,\n\t\t},\n\n\t\t['Offscreen Targeting'] = {\n\t\t\t['Enabled'] = false,\n\t\t},\n\n\t\t['Future'] = {\n\t\t\t['Enabled'] = false,\n\n\t\t\t['Shotguns'] = {\n\t\t\t\t['Values'] = {\n\t\t\t\t\t['X'] = 0.13,\n\t\t\t\t\t['Y'] = 0.02,\n\t\t\t\t\t['Z'] = 0.13,\n\t\t\t\t},\n\t\t\t},\n\t\t\t['Pistols']  = {\n\t\t\t\t['Values'] = {\n\t\t\t\t\t['X'] = 0.13,\n\t\t\t\t\t['Y'] = 0.02,\n\t\t\t\t\t['Z'] = 0.13,\n\t\t\t\t},\n\t\t\t},\n\t\t\t['Others']   = {\n\t\t\t\t['Values'] = {\n\t\t\t\t\t['X'] = 0.13,\n\t\t\t\t\t['Y'] = 0.02,\n\t\t\t\t\t['Z'] = 0.13,\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t},\n\n\t['Aimbot'] = {\n\t\t['Enabled'] = false,\n\t\t['Mode'] = 'Toggle', -- Toggle / Hold\n\t\t['Max Range'] = math.huge,\n\n\t\t['Bind'] = {\n\t\t\t['Key'] = 'C',\n\t\t\t['Type'] = 'toggle',\n\t\t},\n\n\t\t['Checks'] = {\n\t\t\t['Alive'] = true,\n\t\t\t['Knocked'] = true,\n\t\t\t['Grabbed'] = true,\n\t\t\t['Vehicle'] = true,\n\t\t\t['Visible'] = true,\n\t\t\t['Tool'] = false,\n\t\t\t['Self Knocked'] = false,\n\t\t\t['Typing'] = true,\n\t\t\t['Crew'] = true,\n\t\t},\n\n\t\t['FOV'] = {\n\t\t\t['Enabled'] = true,\n\t\t\t['Visible'] = false,\n\n\t\t\t['Shape'] = 'Circle', -- Circle / 2D Box\n\n\t\t\t['Circle'] = {\n\t\t\t\t['Size'] = math.huge,\n\t\t\t},\n\n\t\t\t['Box'] = {\n\t\t\t\t['Width'] = 9e9,\n\t\t\t\t['Height'] = 9e9,\n\t\t\t},\n\t\t},\n\n\t\t['Target Part'] = {\n\t\t\t['Part'] = 'Head', -- Head / HumanoidRootPart / Closest Part / Closest Point\n\t\t},\n\n\t\t['Smoothing'] = {\n\t\t\t['Enabled'] = true,\n\n\t\t\t['X'] = 0.1,\n\t\t\t['Y'] = 0.1,\n\t\t\t['Z'] = 0.1,\n\n\t\t\t['Easing'] = {\n\t\t\t\t['In'] = 'Linear', -- EasingStyle\n\t\t\t\t['Out'] = 'InOut', -- EasingDirection\n\t\t\t},\n\t\t},\n\n\t\t['Prediction'] = {\n\t\t\t['Enabled'] = false,\n\t\t\t['Values'] = {\n\t\t\t\t['X'] = 0.13,\n\t\t\t\t['Y'] = 0.13,\n\t\t\t\t['Z'] = 0.13,\n\t\t\t},\n\t\t},\n\t},\n\n\t['Triggerbot'] = {\n\t\t['Enabled'] = false,\n\t\t['Max Range'] = math.huge,\n\t\t['Limit To Weapon Range'] = true, -- only fire if the target is within the equipped tool's Range value\n\t\t['Selection'] = 'Target', -- Automatic / Target\n\n\t\t['Delay'] = 0, -- seconds to wait before firing\n\n\t\t['Bind'] = {\n\t\t\t['Key'] = 'C',\n\t\t\t['Type'] = 'toggle',\n\t\t},\n\n\t\t['Target Bind'] = {\n\t\t\t['Key'] = 'C',\n\t\t},\n\n\t\t['Keybind'] = {\n\t\t\t['Key'] = 'MouseButton1',\n\t\t\t['Mode'] = 'Mouse', -- Mouse / Keybind\n\t\t\t['Type'] = 'Hold', -- Toggle / Hold\n\t\t},\n\n\t\t['Checks'] = {\n\t\t\t['Alive'] = true,\n\t\t\t['Knocked'] = true,\n\t\t\t['Grabbed'] = true,\n\t\t\t['Vehicle'] = true,\n\t\t\t['Visible'] = true,\n\t\t\t['Tool'] = false,\n\t\t\t['Self Knocked'] = false,\n\t\t\t['Typing'] = true,\n\t\t\t['Crew'] = true,\n\t\t},\n\n\t\t['FOV'] = {\n\t\t\t['Enabled'] = true,\n\t\t\t['Visible'] = false,\n\n\t\t\t['Shape'] = '2D Box', -- Circle / 2D Box\n\n\t\t\t['Circle'] = {\n\t\t\t\t['Size'] = math.huge,\n\t\t\t},\n\n\t\t\t['Box'] = {\n\t\t\t\t['Width'] = math.huge,\n\t\t\t\t['Height'] = math.huge,\n\t\t\t},\n\t\t},\n\n\t\t['Trigger Mode'] = 'Raycast', -- FOV / Raycast\n\n\t\t['Prediction'] = {\n\t\t\t['Enabled'] = false,\n\t\t\t['Values'] = {\n\t\t\t\t['X'] = 0.13,\n\t\t\t\t['Y'] = 0.13,\n\t\t\t\t['Z'] = 0.13,\n\t\t\t},\n\t\t},\n\n\t\t['Offscreen Targeting'] = {\n\t\t\t['Enabled'] = false,\n\t\t},\n\t},\n\n\t['Modifications'] = {\n\n\t\t['Double Tap'] = {\n\t\t\t['Enabled'] = false,\n\n\t\t\t['Bind'] = {\n\t\t\t\t['Key'] = 'G',\n\t\t\t\t['Type'] = 'toggle',\n\t\t\t},\n\n\t\t\t['Weapon Configs'] = {\n\t\t\t\t['Enabled'] = true,\n\t\t\t\t['Shotguns'] = { \n\t\t\t\t\t['Enabled'] = true, \n\t\t\t\t},\t\n\t\t\t\t['Pistols']  = { \n\t\t\t\t\t['Enabled'] = true, \n\t\t\t\t},\t\t\n\t\t\t\t['Others']   = { \n\t\t\t\t\t['Enabled'] = false, \n\t\t\t\t},\n\t\t\t},\n\t\t},\n\n\t\t['Spread Modifications'] = {\n\t\t\t['Enabled'] = true,\n\t\t\t['Value'] = 0.4,\n\t\t\t['Randomizer'] = {\n\t\t\t\t['Enabled'] = true,\n\t\t\t\t['Min'] = 0.3,\n\t\t\t\t['Max'] = 0.5,\n\t\t\t},\n\n\t\t\t['Spread Angles'] = {\n\t\t\t\t['Enabled'] = false, --// ts for remakes\n\t\t\t\t['Game'] = 'zee', -- 'zee' / 'das'\n\t\t\t},\n\t\t},\n\n\t\t['Misc Gun Modifications'] = {\n\t\t\t['No Recoil'] = true,\n\n\t\t\t['Range Enhancer'] = {\n\t\t\t\t['Enabled'] = false,\n\t\t\t\t['Value'] = 12, --// this is probably the max, going too high may cause detections and fake bullets.\n\t\t\t},\n\t\t},\n\n\t\t['Das Hood'] = {\n\t\t\t['Inf Range'] = {\n\t\t\t\t['Enabled'] = false,\n\t\t\t},\n\n\t\t\t['Wallbang'] = {\n\t\t\t\t['Enabled'] = false, --// this is detected in real da hood, do not use.\n\t\t\t},\n\n\t\t\t['Damage Modifier'] = {\n\t\t\t\t['Enabled'] = false,\n\t\t\t\t['Weapons'] = {\n\t\t\t\t\t['Shotguns'] = {\n\t\t\t\t\t\t['Enabled'] = false,\n\t\t\t\t\t\t['Mode'] = 'full',\n\t\t\t\t\t},\n\t\t\t\t\t['Pistols'] = {\n\t\t\t\t\t\t['Enabled'] = false,\n\t\t\t\t\t\t['Mode'] = 'full',\n\t\t\t\t\t},\n\t\t\t\t\t['Others'] = {\n\t\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t\t['Mode'] = 'full',\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\n\t\t['Delay Changer'] = {\n\t\t\t['Enabled'] = false,\n\t\t\t['Delay'] = 0,\n\n\t\t\t['Weapon Configs'] = {\n\t\t\t\t['Enabled'] = false,\n\t\t\t\t['Shotguns'] = {\n\t\t\t\t\t['Delay'] = 0.05, \n\t\t\t\t},\n\t\t\t\t['Pistols']  = {\n\t\t\t\t\t['Delay'] = 0.01, \n\t\t\t\t},\n\t\t\t\t['Others']   = {\n\t\t\t\t\t['Delay'] = 0.02, \n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t},\n\n\t['Name ESP'] = {\n\t\t['Enabled'] = false,\n\n\t\t['Bind'] = {\n\t\t\t['Key'] = 'P',\n\t\t\t['Type'] = 'toggle',\n\t\t},\n\n\t\t['Color'] = Color3.fromRGB(255, 255, 255),\n\t\t['Target Color'] = Color3.fromRGB(90, 90, 90),\n\t\t['Text Size'] = 13,\n\t\t['Font'] = 'GothamBold', \n\t},\n\t['Movement'] = {\n\t\t['Anti Trip'] = true,\n\t\t['No Jump Cooldown'] = true,\n\n\t\t['WalkSpeed'] = {\n\t\t\t['Enabled'] = false,\n\t\t\t['Mode'] = 'Number', -- Number / Multiplier\n\n\t\t\t['Bind'] = {\n\t\t\t\t['Key'] = 'T',\n\t\t\t\t['Type'] = 'toggle',\n\t\t\t},\n\n\t\t\t['Values'] = {\n\t\t\t\t['Number'] = 620,\n\t\t\t\t['Multiplier'] = 6.2,\n\t\t\t},\n\t\t\t['Conditions'] = {\n\t\t\t\t['Normal'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t\t['Knife'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t\t['Reload'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t\t['Shooting'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t\t['Low Health'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\n\t\t['JumpPower'] = {\n\t\t\t['Enabled'] = false,\n\t\t\t['Spiderman Mode'] = true,\n\t\t\t['Mode'] = 'Number', -- Number / Multiplier\n\n\t\t\t['Bind'] = {\n\t\t\t\t['Key'] = 'Y',\n\t\t\t\t['Type'] = 'toggle',\n\t\t\t},\n\n\t\t\t['Values'] = {\n\t\t\t\t['Number'] = 400,\n\t\t\t\t['Multiplier'] = 4,\n\t\t\t},\n\t\t\t['Conditions'] = {\n\t\t\t\t['Normal'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t\t['Knife'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t\t['Reload'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t\t['Shooting'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t\t['Low Health'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t},\n\n\t['Utilities'] = {\n\t\t['Inventory Sorter'] = {\n\t\t\t['Enabled'] = false,\n\n\t\t\t['Bind'] = {\n\t\t\t\t['Key'] = 'F2',\n\t\t\t\t['Type'] = 'toggle',\n\t\t\t},\n\n\t\t\t['Order'] = {\n\t\t\t\t[1] = '[Double-Barrel SG]',\n\t\t\t\t[2] = '[Revolver]',\n\t\t\t\t[3] = '[TacticalShotgun]',\n\t\t\t\t[4] = '[Knife]',\n\t\t\t},\n\t\t},\n\n\t\t['Skin Changer'] = { --// disable any texture skins you have equipped for now, until we fix that problem.\n\t\t\t['Enabled'] = true,\n\n\t\t\t['Skins'] = {\n\t\t\t\t['[Double-Barrel SG]'] = 'Stars',\n\t\t\t\t['[Revolver]'] = 'Galaxy',\n\t\t\t\t['[TacticalShotgun]'] = 'Patriot',\n\t\t\t\t['[Knife]'] = 'Bat Sharp',\n\t\t\t},\n\t\t},\n\n\t\t['Animation Changer'] = {\n\t\t\t['Enabled'] = false,\n\n\t\t\t['Animations'] = {\n\t\t\t\t['Idle']  = 'Zombie',\n\t\t\t\t['Run']   = 'Zombie',\n\t\t\t\t['Walk']  = 'Zombie',\n\t\t\t\t['Jump']  = 'Ninja',\n\t\t\t\t['Fall']  = 'Ninja',\n\t\t\t\t['Climb'] = 'Ninja',\n\t\t\t},\n\t\t},\n\n\t\t['Hitbox Expander'] = {\n\t\t\t['Enabled'] = false,\n\t\t\t['Size'] = 8,\n\t\t\t['Target Only'] = true,\n\t\t\t['Visualize'] = false, -- shows hitbox as black transparent part\n\t\t},\n\t},\n\n\t['Anti Stomp'] = {\n\t\t['Enabled'] = false,\n\t},\n\n\t['Char'] = {\n\t\t['Enabled'] = false, -- this is kinda bs but its ez to fix\n\t\t['Target'] = 'richoffluau',\n\n\t\t['Body Size'] = {\n\t\t\t['Mode'] = 'Skinny', -- Skinny / Normal / Fat\n\t\t},\n\t},\n}",
+    "updatedAt": "2026-07-04T18:10:50.102Z",
+    "updatedBy": "ed01e13fede0f0d62c6e15d393d0e33c"
+  },
+  "users": [
+    {
+      "id": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "email": "admin",
+      "passwordHash": "120000:cfe2ff5461e6c4d37ce0d311b58f184e:bf4809a0f46d53c8c28800b590bea6c0ae34ed5e58b1e986f19e91f669ae37cf",
+      "displayName": "Luxx Admin",
+      "role": "admin",
+      "isBanned": false,
+      "licenseKeyId": "3f15b7bf4b887c3c9acc0ba909e82606",
+      "createdAt": "2026-07-04T16:44:54.028Z",
+      "updatedAt": "2026-07-04T18:31:28.171Z",
+      "lastLoginAt": "2026-07-04T18:31:28.171Z"
+    }
+  ],
+  "licenseKeys": [
+    {
+      "id": "3f15b7bf4b887c3c9acc0ba909e82606",
+      "keyPreview": "ADMIN-INTERNAL-KEY",
+      "keyHash": "9fbc9ac48e11a03a0d7f66ece9775ac40fc0fa72a3a43026aeca32649e98fe0b",
+      "status": "used",
+      "createdAt": "2026-07-04T16:44:53.909Z",
+      "updatedAt": "2026-07-04T16:44:53.909Z",
+      "createdBy": "system",
+      "note": "Seed license for the administrator",
+      "claimedByUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "claimedAt": "2026-07-04T16:44:54.029Z",
+      "expiresAt": null
+    },
+    {
+      "id": "9a492a30316a0eb28d2348fb89f82f56",
+      "keyPreview": "adminkey1234",
+      "keyHash": "622a8c75384f9cc93b870c29abde71b2ac0c5e71667a8589228d78b12a234bd1",
+      "status": "active",
+      "createdAt": "2026-07-04T16:44:53.909Z",
+      "updatedAt": "2026-07-04T16:44:53.909Z",
+      "createdBy": "system",
+      "note": "Starter registration key",
+      "claimedByUserId": null,
+      "claimedAt": null,
+      "expiresAt": null
+    }
+  ],
+  "configs": [
+    {
+      "id": "406e29f20d03048d817f90e124389b83",
+      "ownerId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "name": "Luxx Default",
+      "tier": "Custom",
+      "description": "Bundled LUXX config synced from luxx.lua.",
+      "luaContent": "shared.luxxcc = {\n\n\t['Globals'] = {\n\t\t['Key'] = \"ADMIN-INTERNAL-KEY\",\n\t\t['Config Mode'] = \"Cloud\", -- Cloud / File\n\n\t\t['Brand'] = {\n\t\t\t['Enabled'] = false,\n\t\t\t['Feature'] = Color3.fromRGB(200, 200, 200),\n\t\t\t['Target'] = Color3.fromRGB(90, 90, 90),\n\t\t\t['Position'] = 'Low Center', -- Low Center / Top Center / Left Center / Right Center / Top Left / Top Right / Bottom Left / Bottom Right\n\t\t},\n\t},\n\n\t['Silent Aim'] = {\n\t\t['Enabled'] = true,\n\t\t['Max Range'] = math.huge,\n\t\t['Selection'] = 'Target', -- Automatic / Target\n\n\t\t['Bind'] = {\n\t\t\t['Key'] = 'C',\n\t\t\t['Type'] = 'toggle',\n\t\t},\n\n\t\t['Target Bind'] = {\n\t\t\t['Key'] = 'C',\n\t\t},\n\n\t\t['Checks'] = {\n\t\t\t['Alive'] = true,\n\t\t\t['Knocked'] = true,\n\t\t\t['Grabbed'] = true,\n\t\t\t['Vehicle'] = true,\n\t\t\t['Visible'] = true,\n\t\t\t['Tool'] = false,\n\t\t\t['Self Knocked'] = false,\n\t\t\t['Typing'] = true,\n\t\t\t['Crew'] = true,\n\t\t},\n\n\t\t['Target Tracer'] = {\n\t\t\t['Enabled'] = true,\n\t\t\t['Color'] = Color3.fromRGB(0, 0, 0),\n\t\t},\n\n\t\t['FOV'] = {\n\t\t\t['Enabled'] = false,\n\t\t\t['Visible'] = false,\n\n\t\t\t['Shape'] = '2D Box', -- Circle / 2D Box\n\n\t\t\t['Circle'] = {\n\t\t\t\t['Size'] = math.huge,\n\t\t\t},\n\n\t\t\t['Box'] = {\n\t\t\t\t['Width'] = math.huge,\n\t\t\t\t['Height'] = math.huge,\n\t\t\t},\n\t\t},\n\n\t\t['Target Part'] = {\n\t\t\t['Part'] = 'Closest Point', -- Head / HumanoidRootPart / Closest Part / Closest Point\n\t\t},\n\n\t\t['Prediction'] = {\n\t\t\t['Enabled'] = false,\n\t\t\t['Values'] = {\n\t\t\t\t['X'] = 0.13,\n\t\t\t\t['Y'] = 0.13,\n\t\t\t\t['Z'] = 0.13,\n\t\t\t},\n\t\t},\n\n\t\t['Auto Shoot'] = {\n\t\t\t['Enabled'] = false,\n\t\t},\n\n\t\t['Offscreen Targeting'] = {\n\t\t\t['Enabled'] = false,\n\t\t},\n\n\t\t['Future'] = {\n\t\t\t['Enabled'] = false,\n\n\t\t\t['Shotguns'] = {\n\t\t\t\t['Values'] = {\n\t\t\t\t\t['X'] = 0.13,\n\t\t\t\t\t['Y'] = 0.02,\n\t\t\t\t\t['Z'] = 0.13,\n\t\t\t\t},\n\t\t\t},\n\t\t\t['Pistols']  = {\n\t\t\t\t['Values'] = {\n\t\t\t\t\t['X'] = 0.13,\n\t\t\t\t\t['Y'] = 0.02,\n\t\t\t\t\t['Z'] = 0.13,\n\t\t\t\t},\n\t\t\t},\n\t\t\t['Others']   = {\n\t\t\t\t['Values'] = {\n\t\t\t\t\t['X'] = 0.13,\n\t\t\t\t\t['Y'] = 0.02,\n\t\t\t\t\t['Z'] = 0.13,\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t},\n\n\t['Aimbot'] = {\n\t\t['Enabled'] = false,\n\t\t['Mode'] = 'Toggle', -- Toggle / Hold\n\t\t['Max Range'] = math.huge,\n\n\t\t['Bind'] = {\n\t\t\t['Key'] = 'C',\n\t\t\t['Type'] = 'toggle',\n\t\t},\n\n\t\t['Checks'] = {\n\t\t\t['Alive'] = true,\n\t\t\t['Knocked'] = true,\n\t\t\t['Grabbed'] = true,\n\t\t\t['Vehicle'] = true,\n\t\t\t['Visible'] = true,\n\t\t\t['Tool'] = false,\n\t\t\t['Self Knocked'] = false,\n\t\t\t['Typing'] = true,\n\t\t\t['Crew'] = true,\n\t\t},\n\n\t\t['FOV'] = {\n\t\t\t['Enabled'] = true,\n\t\t\t['Visible'] = false,\n\n\t\t\t['Shape'] = 'Circle', -- Circle / 2D Box\n\n\t\t\t['Circle'] = {\n\t\t\t\t['Size'] = math.huge,\n\t\t\t},\n\n\t\t\t['Box'] = {\n\t\t\t\t['Width'] = 9e9,\n\t\t\t\t['Height'] = 9e9,\n\t\t\t},\n\t\t},\n\n\t\t['Target Part'] = {\n\t\t\t['Part'] = 'Head', -- Head / HumanoidRootPart / Closest Part / Closest Point\n\t\t},\n\n\t\t['Smoothing'] = {\n\t\t\t['Enabled'] = true,\n\n\t\t\t['X'] = 0.1,\n\t\t\t['Y'] = 0.1,\n\t\t\t['Z'] = 0.1,\n\n\t\t\t['Easing'] = {\n\t\t\t\t['In'] = 'Linear', -- EasingStyle\n\t\t\t\t['Out'] = 'InOut', -- EasingDirection\n\t\t\t},\n\t\t},\n\n\t\t['Prediction'] = {\n\t\t\t['Enabled'] = false,\n\t\t\t['Values'] = {\n\t\t\t\t['X'] = 0.13,\n\t\t\t\t['Y'] = 0.13,\n\t\t\t\t['Z'] = 0.13,\n\t\t\t},\n\t\t},\n\t},\n\n\t['Triggerbot'] = {\n\t\t['Enabled'] = false,\n\t\t['Max Range'] = math.huge,\n\t\t['Limit To Weapon Range'] = true, -- only fire if the target is within the equipped tool's Range value\n\t\t['Selection'] = 'Target', -- Automatic / Target\n\n\t\t['Delay'] = 0, -- seconds to wait before firing\n\n\t\t['Bind'] = {\n\t\t\t['Key'] = 'C',\n\t\t\t['Type'] = 'toggle',\n\t\t},\n\n\t\t['Target Bind'] = {\n\t\t\t['Key'] = 'C',\n\t\t},\n\n\t\t['Keybind'] = {\n\t\t\t['Key'] = 'MouseButton1',\n\t\t\t['Mode'] = 'Mouse', -- Mouse / Keybind\n\t\t\t['Type'] = 'Hold', -- Toggle / Hold\n\t\t},\n\n\t\t['Checks'] = {\n\t\t\t['Alive'] = true,\n\t\t\t['Knocked'] = true,\n\t\t\t['Grabbed'] = true,\n\t\t\t['Vehicle'] = true,\n\t\t\t['Visible'] = true,\n\t\t\t['Tool'] = false,\n\t\t\t['Self Knocked'] = false,\n\t\t\t['Typing'] = true,\n\t\t\t['Crew'] = true,\n\t\t},\n\n\t\t['FOV'] = {\n\t\t\t['Enabled'] = true,\n\t\t\t['Visible'] = false,\n\n\t\t\t['Shape'] = '2D Box', -- Circle / 2D Box\n\n\t\t\t['Circle'] = {\n\t\t\t\t['Size'] = math.huge,\n\t\t\t},\n\n\t\t\t['Box'] = {\n\t\t\t\t['Width'] = math.huge,\n\t\t\t\t['Height'] = math.huge,\n\t\t\t},\n\t\t},\n\n\t\t['Trigger Mode'] = 'Raycast', -- FOV / Raycast\n\n\t\t['Prediction'] = {\n\t\t\t['Enabled'] = false,\n\t\t\t['Values'] = {\n\t\t\t\t['X'] = 0.13,\n\t\t\t\t['Y'] = 0.13,\n\t\t\t\t['Z'] = 0.13,\n\t\t\t},\n\t\t},\n\n\t\t['Offscreen Targeting'] = {\n\t\t\t['Enabled'] = false,\n\t\t},\n\t},\n\n\t['Modifications'] = {\n\n\t\t['Double Tap'] = {\n\t\t\t['Enabled'] = false,\n\n\t\t\t['Bind'] = {\n\t\t\t\t['Key'] = 'G',\n\t\t\t\t['Type'] = 'toggle',\n\t\t\t},\n\n\t\t\t['Weapon Configs'] = {\n\t\t\t\t['Enabled'] = true,\n\t\t\t\t['Shotguns'] = { \n\t\t\t\t\t['Enabled'] = true, \n\t\t\t\t},\t\n\t\t\t\t['Pistols']  = { \n\t\t\t\t\t['Enabled'] = true, \n\t\t\t\t},\t\t\n\t\t\t\t['Others']   = { \n\t\t\t\t\t['Enabled'] = false, \n\t\t\t\t},\n\t\t\t},\n\t\t},\n\n\t\t['Spread Modifications'] = {\n\t\t\t['Enabled'] = true,\n\t\t\t['Value'] = 0.4,\n\t\t\t['Randomizer'] = {\n\t\t\t\t['Enabled'] = true,\n\t\t\t\t['Min'] = 0.3,\n\t\t\t\t['Max'] = 0.5,\n\t\t\t},\n\n\t\t\t['Spread Angles'] = {\n\t\t\t\t['Enabled'] = false, --// ts for remakes\n\t\t\t\t['Game'] = 'zee', -- 'zee' / 'das'\n\t\t\t},\n\t\t},\n\n\t\t['Misc Gun Modifications'] = {\n\t\t\t['No Recoil'] = true,\n\n\t\t\t['Range Enhancer'] = {\n\t\t\t\t['Enabled'] = false,\n\t\t\t\t['Value'] = 12, --// this is probably the max, going too high may cause detections and fake bullets.\n\t\t\t},\n\t\t},\n\n\t\t['Das Hood'] = {\n\t\t\t['Inf Range'] = {\n\t\t\t\t['Enabled'] = false,\n\t\t\t},\n\n\t\t\t['Wallbang'] = {\n\t\t\t\t['Enabled'] = false, --// this is detected in real da hood, do not use.\n\t\t\t},\n\n\t\t\t['Damage Modifier'] = {\n\t\t\t\t['Enabled'] = false,\n\t\t\t\t['Weapons'] = {\n\t\t\t\t\t['Shotguns'] = {\n\t\t\t\t\t\t['Enabled'] = false,\n\t\t\t\t\t\t['Mode'] = 'full',\n\t\t\t\t\t},\n\t\t\t\t\t['Pistols'] = {\n\t\t\t\t\t\t['Enabled'] = false,\n\t\t\t\t\t\t['Mode'] = 'full',\n\t\t\t\t\t},\n\t\t\t\t\t['Others'] = {\n\t\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t\t['Mode'] = 'full',\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\n\t\t['Delay Changer'] = {\n\t\t\t['Enabled'] = false,\n\t\t\t['Delay'] = 0,\n\n\t\t\t['Weapon Configs'] = {\n\t\t\t\t['Enabled'] = false,\n\t\t\t\t['Shotguns'] = {\n\t\t\t\t\t['Delay'] = 0.05, \n\t\t\t\t},\n\t\t\t\t['Pistols']  = {\n\t\t\t\t\t['Delay'] = 0.01, \n\t\t\t\t},\n\t\t\t\t['Others']   = {\n\t\t\t\t\t['Delay'] = 0.02, \n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t},\n\n\t['Name ESP'] = {\n\t\t['Enabled'] = false,\n\n\t\t['Bind'] = {\n\t\t\t['Key'] = 'P',\n\t\t\t['Type'] = 'toggle',\n\t\t},\n\n\t\t['Color'] = Color3.fromRGB(255, 255, 255),\n\t\t['Target Color'] = Color3.fromRGB(90, 90, 90),\n\t\t['Text Size'] = 13,\n\t\t['Font'] = 'GothamBold', \n\t},\n\t['Movement'] = {\n\t\t['Anti Trip'] = true,\n\t\t['No Jump Cooldown'] = true,\n\n\t\t['WalkSpeed'] = {\n\t\t\t['Enabled'] = false,\n\t\t\t['Mode'] = 'Number', -- Number / Multiplier\n\n\t\t\t['Bind'] = {\n\t\t\t\t['Key'] = 'T',\n\t\t\t\t['Type'] = 'toggle',\n\t\t\t},\n\n\t\t\t['Values'] = {\n\t\t\t\t['Number'] = 620,\n\t\t\t\t['Multiplier'] = 6.2,\n\t\t\t},\n\t\t\t['Conditions'] = {\n\t\t\t\t['Normal'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t\t['Knife'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t\t['Reload'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t\t['Shooting'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t\t['Low Health'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\n\t\t['JumpPower'] = {\n\t\t\t['Enabled'] = false,\n\t\t\t['Spiderman Mode'] = true,\n\t\t\t['Mode'] = 'Number', -- Number / Multiplier\n\n\t\t\t['Bind'] = {\n\t\t\t\t['Key'] = 'Y',\n\t\t\t\t['Type'] = 'toggle',\n\t\t\t},\n\n\t\t\t['Values'] = {\n\t\t\t\t['Number'] = 400,\n\t\t\t\t['Multiplier'] = 4,\n\t\t\t},\n\t\t\t['Conditions'] = {\n\t\t\t\t['Normal'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t\t['Knife'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t\t['Reload'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t\t['Shooting'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t\t['Low Health'] = {\n\t\t\t\t\t['Enabled'] = true,\n\t\t\t\t\t['Multiplier'] = 1,\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t},\n\n\t['Utilities'] = {\n\t\t['Inventory Sorter'] = {\n\t\t\t['Enabled'] = false,\n\n\t\t\t['Bind'] = {\n\t\t\t\t['Key'] = 'F2',\n\t\t\t\t['Type'] = 'toggle',\n\t\t\t},\n\n\t\t\t['Order'] = {\n\t\t\t\t[1] = '[Double-Barrel SG]',\n\t\t\t\t[2] = '[Revolver]',\n\t\t\t\t[3] = '[TacticalShotgun]',\n\t\t\t\t[4] = '[Knife]',\n\t\t\t},\n\t\t},\n\n\t\t['Skin Changer'] = { --// disable any texture skins you have equipped for now, until we fix that problem.\n\t\t\t['Enabled'] = true,\n\n\t\t\t['Skins'] = {\n\t\t\t\t['[Double-Barrel SG]'] = 'Stars',\n\t\t\t\t['[Revolver]'] = 'Galaxy',\n\t\t\t\t['[TacticalShotgun]'] = 'Patriot',\n\t\t\t\t['[Knife]'] = 'Bat Sharp',\n\t\t\t},\n\t\t},\n\n\t\t['Animation Changer'] = {\n\t\t\t['Enabled'] = false,\n\n\t\t\t['Animations'] = {\n\t\t\t\t['Idle']  = 'Zombie',\n\t\t\t\t['Run']   = 'Zombie',\n\t\t\t\t['Walk']  = 'Zombie',\n\t\t\t\t['Jump']  = 'Ninja',\n\t\t\t\t['Fall']  = 'Ninja',\n\t\t\t\t['Climb'] = 'Ninja',\n\t\t\t},\n\t\t},\n\n\t\t['Hitbox Expander'] = {\n\t\t\t['Enabled'] = false,\n\t\t\t['Size'] = 8,\n\t\t\t['Target Only'] = true,\n\t\t\t['Visualize'] = false, -- shows hitbox as black transparent part\n\t\t},\n\t},\n\n\t['Anti Stomp'] = {\n\t\t['Enabled'] = false,\n\t},\n\n\t['Char'] = {\n\t\t['Enabled'] = false, -- this is kinda bs but its ez to fix\n\t\t['Target'] = 'richoffluau',\n\n\t\t['Body Size'] = {\n\t\t\t['Mode'] = 'Skinny', -- Skinny / Normal / Fat\n\t\t},\n\t},\n}",
+      "isActive": true,
+      "visibility": "private",
+      "price": 0,
+      "isPublished": false,
+      "createdAt": "2026-07-04T16:44:54.029Z",
+      "updatedAt": "2026-07-04T18:31:49.984Z"
+    }
+  ],
+  "purchases": [],
+  "scriptSessions": [
+    {
+      "id": "fc12a8ab6e8278a54cf9d514d55e65d7",
+      "userId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "sessionCode": "17F7AC0D8F94B3D8",
+      "online": false,
+      "game": "Da Hood",
+      "executor": "Solara",
+      "version": null,
+      "lastSeenAt": "2026-07-04T18:32:21.148Z",
+      "createdAt": "2026-07-04T16:45:31.249Z",
+      "updatedAt": "2026-07-04T18:32:21.148Z"
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "20bf82b02f9989b82a8f4f28546dcf75",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "config.updated",
+      "details": "Updated config Luxx Default",
+      "createdAt": "2026-07-04T18:31:49.986Z"
+    },
+    {
+      "id": "e00bff69acbb882e67074323ad1a8098",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "auth.login",
+      "details": "Signed in from Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Trae/1.107.1 Chrome/142.0.7444.235 Electron/39.2.7 Safari/537.36",
+      "createdAt": "2026-07-04T18:31:28.172Z"
+    },
+    {
+      "id": "082e2eaf49718a9f7d4391f6f458aabb",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "config.updated",
+      "details": "Updated config Luxx Default",
+      "createdAt": "2026-07-04T18:14:37.211Z"
+    },
+    {
+      "id": "e2849b0a7cd479967f02629ebfa4c108",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "config.updated",
+      "details": "Updated config Luxx Default",
+      "createdAt": "2026-07-04T18:14:27.782Z"
+    },
+    {
+      "id": "acd0d521782ffed48631f294add78cd3",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "config.updated",
+      "details": "Updated config Luxx Default",
+      "createdAt": "2026-07-04T18:07:31.612Z"
+    },
+    {
+      "id": "913713e38b5cf93002352158b3b2a32f",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "config.updated",
+      "details": "Updated config Luxx Default",
+      "createdAt": "2026-07-04T18:07:09.388Z"
+    },
+    {
+      "id": "0b6fa22ead98c4a89b4ba318f454ac6e",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "config.updated",
+      "details": "Updated config Luxx Default",
+      "createdAt": "2026-07-04T18:06:34.552Z"
+    },
+    {
+      "id": "7e24d91cf21e4798e93e0325b2f5355e",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "config.updated",
+      "details": "Updated config Luxx Default",
+      "createdAt": "2026-07-04T17:54:09.508Z"
+    },
+    {
+      "id": "522bad379281c4b0096dab6d48158f5c",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "config.updated",
+      "details": "Updated config Luxx Default",
+      "createdAt": "2026-07-04T17:37:29.706Z"
+    },
+    {
+      "id": "6288318cdc652d178754028e50e113b1",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "config.updated",
+      "details": "Updated config Luxx Default",
+      "createdAt": "2026-07-04T17:23:03.097Z"
+    },
+    {
+      "id": "94bc320f53678ba4234c9d1f3407b4f4",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "config.updated",
+      "details": "Updated config Luxx Default",
+      "createdAt": "2026-07-04T17:22:08.965Z"
+    },
+    {
+      "id": "1a51bab0f20b04fd19523972da0df721",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "config.updated",
+      "details": "Updated config Luxx Default",
+      "createdAt": "2026-07-04T17:15:07.365Z"
+    },
+    {
+      "id": "b218c20783a6fc754aa070ae7b04de46",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "config.updated",
+      "details": "Updated config Luxx Default",
+      "createdAt": "2026-07-04T17:11:24.672Z"
+    },
+    {
+      "id": "b1e879da2f2665c89e7f531e7d3df90f",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "auth.login",
+      "details": "Signed in from Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Edg/149.0.0.0",
+      "createdAt": "2026-07-04T17:10:26.744Z"
+    },
+    {
+      "id": "95bb20fba6edd731502bca66bc862818",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "config.updated",
+      "details": "Updated config Luxx Default",
+      "createdAt": "2026-07-04T16:51:10.896Z"
+    },
+    {
+      "id": "8e7b34536f6b55867a9c95ec5c28dbfa",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "config.updated",
+      "details": "Updated config Luxx Default",
+      "createdAt": "2026-07-04T16:46:25.424Z"
+    },
+    {
+      "id": "46e79177297dd964ac630b12c9f8fa3a",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "config.updated",
+      "details": "Updated config Luxx Default",
+      "createdAt": "2026-07-04T16:46:14.485Z"
+    },
+    {
+      "id": "8580087b29c55d3c63c983fbfcc0db5e",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "auth.login",
+      "details": "Signed in from Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Edg/149.0.0.0",
+      "createdAt": "2026-07-04T16:45:31.249Z"
+    },
+    {
+      "id": "a2e3f55455df6e40f6b914c990578b57",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "seed.admin.created",
+      "details": "Seeded admin account and initial license set",
+      "createdAt": "2026-07-04T16:44:54.029Z"
+    }
+  ],
+  "passwordResets": []
+}

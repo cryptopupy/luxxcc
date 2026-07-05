@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 32% 6%;
+    --foreground: 215 44% 94%;
+    --card: 221 29% 11%;
+    --card-foreground: 215 44% 94%;
+    --popover: 221 29% 11%;
+    --popover-foreground: 215 44% 94%;
+    --primary: 210 100% 77%;
+    --primary-foreground: 221 44% 10%;
+    --secondary: 218 22% 18%;
+    --secondary-foreground: 215 32% 86%;
+    --muted: 219 22% 18%;
+    --muted-foreground: 219 18% 58%;
+    --accent: 216 36% 23%;
+    --accent-foreground: 215 44% 94%;
+    --destructive: 350 64% 56%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 24% 18%;
+    --input: 220 24% 18%;
+    --ring: 210 100% 77%;
+    --chart-1: 210 100% 77%;
+    --chart-2: 45 80% 72%;
+    --chart-3: 146 60% 66%;
+    --chart-4: 18 90% 68%;
+    --chart-5: 350 78% 74%;
+    --radius: 0.75rem;
+    --font-heading: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --sidebar-background: 220 32% 8%;
+    --sidebar-foreground: 215 44% 94%;
+    --sidebar-primary: 210 100% 77%;
+    --sidebar-primary-foreground: 221 44% 10%;
+    --sidebar-accent: 216 36% 23%;
+    --sidebar-accent-foreground: 215 44% 94%;
+    --sidebar-border: 220 24% 18%;
+    --sidebar-ring: 210 100% 77%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+    background-color: #060910;
+    background-image:
+      radial-gradient(circle at top, rgba(63, 108, 191, 0.11), transparent 28%),
+      radial-gradient(circle at 1px 1px, rgba(110, 129, 168, 0.15) 1px, transparent 0);
+    background-size: auto, 32px 32px;
+    min-height: 100vh;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+@layer components {
+  .luxx-shell {
+    @apply mx-auto w-full max-w-[1180px] px-4 sm:px-6;
+  }
+
+  .luxx-surface {
+    @apply border border-white/[0.06] bg-[#141925]/95 shadow-[0_0_0_1px_rgba(255,255,255,0.01),0_30px_80px_rgba(0,0,0,0.24)];
+  }
+
+  .luxx-surface-soft {
+    @apply border border-white/[0.05] bg-[#121722]/92;
+  }
+
+  .luxx-strip {
+    @apply border-b border-white/[0.05] bg-[linear-gradient(180deg,rgba(28,35,51,0.98),rgba(20,26,39,0.96))];
+  }
+
+  .luxx-nav-link {
+    @apply relative inline-flex h-[48px] items-center px-4 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#7f8ca9] transition-colors hover:text-[#d9e7ff];
+  }
+
+  .luxx-nav-link-active {
+    @apply text-[#69b0ff];
+  }
+
+  .luxx-nav-link-active::after {
+    content: "";
+    @apply absolute inset-x-0 bottom-0 h-px bg-[#69b0ff];
+  }
+
+  .luxx-icon-button {
+    @apply inline-flex h-9 w-9 items-center justify-center border border-white/[0.08] bg-white/[0.02] text-[#7f8ca9] transition-colors hover:text-white;
+  }
+
+  .luxx-button {
+    @apply inline-flex items-center justify-center gap-2 border border-white/[0.08] bg-[#111723] px-4 py-2.5 text-[10px] font-bold uppercase tracking-[0.24em] text-[#c9d3e6] transition-colors hover:border-white/[0.16] hover:text-white;
+  }
+
+  .luxx-button-primary {
+    @apply border-[#29436d] bg-[#162238] text-[#dce7fb] hover:bg-[#1a2840];
+  }
+
+  .luxx-button-danger {
+    @apply border-[#5d232a] bg-[#29161c] text-[#ff6d6d] hover:bg-[#331920];
+  }
+
+  .luxx-tag {
+    @apply inline-flex items-center border border-[#35517c] bg-[#18243b] px-2 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#8abcff];
+  }
+
+  .luxx-section-title {
+    @apply text-[11px] font-bold uppercase tracking-[0.26em] text-[#ffffff];
+  }
+
+  .luxx-label {
+    @apply text-[11px] font-semibold uppercase tracking-[0.26em] text-[#67748f];
+  }
+
+  .luxx-input {
+    @apply w-full border border-white/[0.08] bg-[#0b1019] px-4 py-3 text-sm text-white placeholder:text-[#44506a] focus:border-[#335486] focus:outline-none;
+  }
+
+  .luxx-divider {
+    @apply border-t border-white/[0.05];
+  }
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #08101b; }
+::-webkit-scrollbar-thumb { background: #22314d; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #30466f; }
+
+.lua-keyword   { color: #4ca3ff; }
+.lua-string    { color: #7db7ff; }
+.lua-number    { color: #ff8f5a; }
+.lua-boolean   { color: #ff8f5a; }
+.lua-comment   { color: #5d6c89; font-style: italic; }
+.lua-function  { color: #d3e1ff; }
+.lua-operator  { color: #73809b; }
+.lua-bracket   { color: #73809b; }
+.lua-key       { color: #88b7ff; }
+.lua-table-key { color: #c76dff; }
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.page-enter {
+  animation: fadeSlideIn 0.22s ease forwards;
+}

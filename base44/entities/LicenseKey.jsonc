@@ -1,0 +1,32 @@
+{
+  "name": "LicenseKey",
+  "type": "object",
+  "properties": {
+    "key_string": {
+      "type": "string",
+      "description": "The license key string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "used",
+        "expired"
+      ],
+      "default": "active"
+    },
+    "used_by_user_id": {
+      "type": "string",
+      "description": "User ID who used this key"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Expiry date, optional"
+    }
+  },
+  "required": [
+    "key_string",
+    "status"
+  ]
+}

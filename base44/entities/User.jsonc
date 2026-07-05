@@ -1,0 +1,38 @@
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "role": {
+      "type": "string",
+      "enum": [
+        "admin",
+        "user"
+      ],
+      "default": "user"
+    },
+    "discord_id": {
+      "type": "string",
+      "description": "Discord user ID"
+    },
+    "discord_tag": {
+      "type": "string",
+      "description": "Discord username#discriminator"
+    },
+    "license_key_id": {
+      "type": "string",
+      "description": "Reference to the license key used"
+    },
+    "license_key_string": {
+      "type": "string",
+      "description": "The actual license key string for display"
+    },
+    "is_banned": {
+      "type": "boolean",
+      "default": false
+    },
+    "active_config_id": {
+      "type": "string",
+      "description": "Currently active config ID"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "name": "MarketplaceListing",
+  "type": "object",
+  "properties": {
+    "config_id": {
+      "type": "string",
+      "description": "Reference to Config entity"
+    },
+    "config_name": {
+      "type": "string"
+    },
+    "config_tier": {
+      "type": "string",
+      "enum": [
+        "Legit",
+        "Semi-Legit",
+        "Blatant",
+        "Rage",
+        "Custom"
+      ]
+    },
+    "config_description": {
+      "type": "string"
+    },
+    "config_lua_preview": {
+      "type": "string",
+      "description": "First 5 lines of Lua for preview"
+    },
+    "price": {
+      "type": "number",
+      "default": 0
+    },
+    "seller_name": {
+      "type": "string"
+    },
+    "seller_id": {
+      "type": "string"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_flagged": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "config_id",
+    "config_name",
+    "config_tier",
+    "price"
+  ]
+}

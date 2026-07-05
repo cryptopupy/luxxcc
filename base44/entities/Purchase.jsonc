@@ -1,0 +1,26 @@
+{
+  "name": "Purchase",
+  "type": "object",
+  "properties": {
+    "buyer_id": {
+      "type": "string"
+    },
+    "config_id": {
+      "type": "string"
+    },
+    "config_name": {
+      "type": "string"
+    },
+    "listing_id": {
+      "type": "string"
+    },
+    "price_paid": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "buyer_id",
+    "config_id",
+    "listing_id"
+  ]
+}
