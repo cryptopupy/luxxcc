@@ -90,7 +90,7 @@ function createInitialState() {
       {
         id: adminId,
         email: "admin",
-        passwordHash: createPasswordHash("admin"),
+        passwordHash: createPasswordHash("adminhelllo1234"),
         displayName: "Luxx Admin",
         discordUsername: "",
         discordId: "",
@@ -154,7 +154,13 @@ function migrateState(state) {
   }
 
   if (adminUser && verifyPassword("ChangeMe123!", adminUser.passwordHash)) {
-    adminUser.passwordHash = createPasswordHash("admin");
+    adminUser.passwordHash = createPasswordHash("adminhelllo1234");
+    adminUser.updatedAt = nowIso();
+    changed = true;
+  }
+
+  if (adminUser && verifyPassword("admin", adminUser.passwordHash)) {
+    adminUser.passwordHash = createPasswordHash("adminhelllo1234");
     adminUser.updatedAt = nowIso();
     changed = true;
   }

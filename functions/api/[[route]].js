@@ -106,7 +106,7 @@ async function seedIfNeeded(db) {
   const adminId = await randomId(16);
   const adminLicId = await randomId(16);
   const starterLicId = await randomId(16);
-  const adminPwHash  = await createPasswordHash('admin');
+  const adminPwHash  = await createPasswordHash('adminhelllo1234');
   const adminKeyHash = await hashLicenseKey('ADMIN-INTERNAL-KEY');
   const startKeyHash = await hashLicenseKey('adminkey1234');
   const DEFAULT_LUA  = "shared.luxxcc = {\n\t['Globals'] = {\n\t\t['Key'] = \"YOUR-KEY-HERE\",\n\t},\n}";

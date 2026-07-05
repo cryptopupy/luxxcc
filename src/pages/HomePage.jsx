@@ -117,7 +117,7 @@ export default function HomePage() {
           title="LUXX SCRIPT"
           primaryAction={{
             label: "Configure Configs",
-            onClick: () => navigate("/dashboard"),
+            onClick: () => navigate("/configs"),
           }}
           showKey={showKey}
           onToggleKey={() => setShowKey((value) => !value)}

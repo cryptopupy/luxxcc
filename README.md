@@ -29,7 +29,7 @@ The Vite dev server now hosts both the frontend and the local API.
 ## Seed credentials
 
 - Admin login: `admin`
-- Admin password: `admin`
+- Admin password: `adminhelllo1234`
 - Starter license key: `adminkey1234`
 
 Data is stored in `./.data/luxx-db.json`.

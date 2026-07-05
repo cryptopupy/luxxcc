@@ -14,6 +14,7 @@ export default function AppLayout() {
   const isConnected = Boolean(home?.scriptConnected);
   const navItems = [
     { label: "Home", path: "/" },
+    { label: "Configs", path: "/configs" },
   ];
 
   if (isConnected) {
