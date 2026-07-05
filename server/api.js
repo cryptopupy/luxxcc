@@ -115,7 +115,7 @@ function buildHomePayload(state, user) {
     user: publicUser(user, state.licenseKeys),
     home: {
       scriptConnected: Boolean(session?.online),
-      gameFound: session?.game || null,
+      gameFound: session?.game ? session.game : null,
       executor: session?.executor || null,
       sessionCode: session?.sessionCode || null,
       lastSeenAt: session?.lastSeenAt || null,
@@ -720,9 +720,9 @@ export function luxxApiPlugin() {
             }
             const session = resolveScriptSession(state, user.id);
             session.online = true;
-            session.game = body.game || "Game Found";
-            session.executor = body.executor || "Unknown Executor";
-            session.version = body.version || null;
+    session.game = body.game || null;
+    session.executor = body.executor || "Unknown Executor";
+    session.version = body.version || null;
             session.lastSeenAt = new Date().toISOString();
             session.updatedAt = new Date().toISOString();
             const activeConfig = state.configs.find((item) => item.ownerId === user.id && item.isActive) || null;

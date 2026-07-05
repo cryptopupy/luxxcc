@@ -72,6 +72,7 @@ export default function HomePage() {
   };
 
   const isConnected = Boolean(status?.scriptConnected);
+  const hasValidGame = Boolean(isConnected && status?.gameFound);
 
   return (
     <div className="space-y-6">
@@ -90,19 +91,27 @@ export default function HomePage() {
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(58,107,194,0.16),_transparent_56%)]" />
         <div className="relative px-6 py-12 text-center sm:px-8 sm:py-16">
-          <SignalBars />
+          {hasValidGame ? (
+            <div className="mx-auto flex h-10 items-center justify-center">
+              <svg className="h-12 w-12 text-[#38c278]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+          ) : (
+            <SignalBars />
+          )}
           <h2 className="mt-6 text-[2.2rem] font-black uppercase tracking-[0.14em] text-white">
-            {isConnected ? "Game Found" : "Verifying..."}
+            {hasValidGame ? "Game Found" : "Verifying..."}
           </h2>
           <div className="mx-auto mt-4 flex max-w-[360px] items-center gap-4">
             <span className="h-px flex-1 bg-white/[0.07]" />
             <p className="text-[11px] font-semibold uppercase tracking-[0.38em] text-[#808ba2]">
-              {isConnected ? `${status?.gameFound || "Unknown Game"}` : "Waiting for game...."}
+              {hasValidGame ? status.gameFound : "Waiting for game...."}
             </p>
             <span className="h-px flex-1 bg-white/[0.07]" />
           </div>
           <p className="mx-auto mt-5 max-w-xl text-sm text-[#8994ab]">
-            {isConnected
+            {hasValidGame
               ? `${status?.executor || "Unknown executor"} is online and the web panel is ready.`
               : null}
           </p>

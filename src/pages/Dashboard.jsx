@@ -115,7 +115,7 @@ export default function Dashboard() {
     );
   }
 
-  if (!home?.scriptConnected) {
+  if (!home?.scriptConnected || !home?.gameFound) {
     return <Navigate to="/" replace />;
   }
 
