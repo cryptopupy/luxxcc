@@ -1,0 +1,9 @@
+name = "luxxcc"
+compatibility_date = "2024-09-23"
+
+pages_build_output_dir = "dist"
+
+[[d1_databases]]
+binding = "LUXX_DB"
+database_name = "luxx"
+database_id = "6b520cdb-9d19-4bca-8c23-314c1b885469"
