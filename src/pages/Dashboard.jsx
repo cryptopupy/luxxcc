@@ -43,6 +43,8 @@ export default function Dashboard() {
 
   useEffect(() => {
     loadData();
+    const interval = setInterval(loadData, 3000); // Refresh every 3 seconds
+    return () => clearInterval(interval);
   }, []);
 
   const activeConfig = configs.find((config) => config.isActive) || null;
