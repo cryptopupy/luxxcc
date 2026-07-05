@@ -132,10 +132,9 @@ export default function Dashboard() {
               <h1 className="text-[2.2rem] font-black uppercase tracking-[0.08em] text-white">
                 {dashboardTitle.toUpperCase()}
               </h1>
-              <span className="luxx-tag">Internal</span>
             </div>
             <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#77b6ff]">
-              Config loaded: {(displayedConfig?.tier || "No active config").toUpperCase()} {displayedConfig?.name ? displayedConfig.name.toUpperCase() : ""}
+              Config loaded: {(displayedConfig?.tier || "No active config").toUpperCase()}
             </p>
           </div>
 

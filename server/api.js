@@ -167,6 +167,7 @@ function cleanupSessions(state) {
     return {
       ...session,
       online: false,
+      game: null,
     };
   });
   return state;
