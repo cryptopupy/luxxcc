@@ -90,19 +90,19 @@ export default function Configs() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-24">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/10 border-t-[#8ab3ff]" />
+        <div className="h-8 w-8 animate-spin border-2 border-white/10 border-t-[#8ab3ff]" />
       </div>
     );
   }
 
   return (
     <div className="space-y-5">
-      <div className="flex w-fit gap-2 rounded-xl border border-white/10 bg-[#101927] p-1">
+      <div className="flex w-fit gap-2 border border-white/10 bg-[#101927] p-1">
         {["marketplace", "my"].map((tabId) => (
           <button
             key={tabId}
             onClick={() => setTab(tabId)}
-            className={`rounded-lg px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] ${
+            className={`px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] ${
               tab === tabId ? "bg-[#16233d] text-[#8ebfff]" : "text-[#8190ab]"
             }`}
           >
@@ -114,7 +114,7 @@ export default function Configs() {
       <AnimatePresence mode="wait">
         {tab === "marketplace" ? (
           <motion.div key="marketplace" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} className="space-y-4">
-            <div className="rounded-[26px] border border-white/10 bg-[#101927] p-5">
+            <div className="border border-white/10 bg-[#101927] p-5">
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#51617f]" />
                 <input
@@ -122,7 +122,7 @@ export default function Configs() {
                   placeholder="Search configs, sellers, or descriptions"
                   value={search}
                   onChange={(event) => setSearch(event.target.value)}
-                  className="w-full rounded-xl border border-white/10 bg-[#09101a] py-3 pl-11 pr-4 text-sm text-white placeholder:text-[#41506d] focus:border-[#3e5f98] focus:outline-none"
+                  className="w-full border border-white/10 bg-[#09101a] py-3 pl-11 pr-4 text-sm text-white placeholder:text-[#41506d] focus:border-[#3e5f98] focus:outline-none"
                 />
               </div>
               <div className="mt-4 flex gap-2 overflow-x-auto">
@@ -130,7 +130,7 @@ export default function Configs() {
                   <button
                     key={tier}
                     onClick={() => setActiveTier(tier)}
-                    className={`rounded-md px-3 py-2 text-[10px] font-bold uppercase tracking-[0.2em] ${
+                    className={`px-3 py-2 text-[10px] font-bold uppercase tracking-[0.2em] ${
                       activeTier === tier ? "border border-[#355287] bg-[#13203b] text-[#d7e6ff]" : "border border-white/10 text-[#7e8ba8]"
                     }`}
                   >
@@ -158,7 +158,7 @@ export default function Configs() {
           </motion.div>
         ) : (
           <motion.div key="my" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} className="space-y-4">
-            <div className="flex items-center justify-between rounded-[26px] border border-white/10 bg-[#101927] p-5">
+            <div className="flex items-center justify-between border border-white/10 bg-[#101927] p-5">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#7f8ba6]">My Configs</p>
                 <p className="mt-2 text-sm text-[#93a1bf]">Save, activate, publish, and price your presets here.</p>
@@ -168,7 +168,7 @@ export default function Configs() {
                   setEditingConfig(null);
                   setShowCreate(true);
                 }}
-                className="flex items-center gap-2 rounded-md border border-[#355287] bg-[#13203b] px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#d7e6ff]"
+                className="flex items-center gap-2 border border-[#355287] bg-[#13203b] px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#d7e6ff]"
               >
                 <Plus size={14} />
                 New Config
@@ -180,7 +180,7 @@ export default function Configs() {
             ) : (
               <div className="space-y-3">
                 {myConfigs.map((config) => (
-                  <div key={config.id} className="rounded-[24px] border border-white/10 bg-[#101927] p-5">
+                  <div key={config.id} className="border border-white/10 bg-[#101927] p-5">
                     <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                       <div>
                         <div className="flex flex-wrap items-center gap-2">
@@ -271,11 +271,11 @@ function ConfigFormDialog({ open, onClose, onSave, initial }) {
     });
   };
 
-  const inputClassName = "w-full rounded-xl border border-white/10 bg-[#09101a] px-4 py-3 text-sm text-white placeholder:text-[#41506d] focus:border-[#3e5f98] focus:outline-none";
+  const inputClassName = "w-full border border-white/10 bg-[#09101a] px-4 py-3 text-sm text-white placeholder:text-[#41506d] focus:border-[#3e5f98] focus:outline-none";
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl border-white/10 bg-[#0e1522]">
+      <DialogContent className="max-w-2xl border-white/10 bg-[#0e1522] rounded-none">
         <DialogHeader>
           <DialogTitle className="text-sm font-semibold uppercase tracking-[0.3em] text-[#9ec2ff]">
             {initial ? "Edit Config" : "Create Config"}
@@ -300,10 +300,10 @@ function ConfigFormDialog({ open, onClose, onSave, initial }) {
             />
           </div>
           <div className="flex gap-3">
-            <button type="button" onClick={onClose} className="flex-1 rounded-xl border border-white/10 px-4 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#8c98b3]">
+            <button type="button" onClick={onClose} className="flex-1 border border-white/10 px-4 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#8c98b3]">
               Cancel
             </button>
-            <button type="submit" className="flex-1 rounded-xl border border-[#355287] bg-[#13203b] px-4 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#dce8ff]">
+            <button type="submit" className="flex-1 border border-[#355287] bg-[#13203b] px-4 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#dce8ff]">
               {initial ? "Save Config" : "Create Config"}
             </button>
           </div>
@@ -345,14 +345,14 @@ function Tag({ children, tone = "default" }) {
     gold: "border-[#635533] text-[#f0d48d]",
   };
 
-  return <span className={`rounded-md border px-2 py-1 text-[10px] font-bold uppercase tracking-[0.18em] ${map[tone]}`}>{children}</span>;
+  return <span className={`border px-2 py-1 text-[10px] font-bold uppercase tracking-[0.18em] ${map[tone]}`}>{children}</span>;
 }
 
 function SmallAction({ icon: Icon, label, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-2 rounded-md border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#c3d1ea]"
+      className="flex items-center gap-2 border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#c3d1ea]"
     >
       <Icon size={13} />
       {label}
@@ -362,7 +362,7 @@ function SmallAction({ icon: Icon, label, onClick }) {
 
 function EmptyState({ title, description }) {
   return (
-    <div className="rounded-[26px] border border-white/10 bg-[#101927] px-6 py-12 text-center">
+    <div className="border border-white/10 bg-[#101927] px-6 py-12 text-center">
       <h3 className="text-xl font-semibold text-white">{title}</h3>
       <p className="mt-3 text-sm leading-6 text-[#91a0be]">{description}</p>
     </div>

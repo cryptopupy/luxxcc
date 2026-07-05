@@ -15,11 +15,8 @@ export default function AppLayout() {
   const navItems = [
     { label: "Home", path: "/" },
     { label: "Configs", path: "/configs" },
+    { label: "Dashboard", path: "/dashboard" },
   ];
-
-  if (isConnected) {
-    navItems.push({ label: "Dashboard", path: "/dashboard" });
-  }
 
   if (isAdmin) {
     navItems.push({ label: "Admin Panel", path: "/admin" });
