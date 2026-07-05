@@ -104,7 +104,7 @@ export default function HomePage() {
           <p className="mx-auto mt-5 max-w-xl text-sm text-[#8994ab]">
             {isConnected
               ? `${status?.executor || "Unknown executor"} is online and the web panel is ready.`
-              : "Keep the LUXX script running and refresh once the site handshake comes online."}
+              : null}
           </p>
           <button onClick={refreshStatus} className="luxx-button mt-8">
             Refresh Status
@@ -116,16 +116,14 @@ export default function HomePage() {
         <ActionTile
           title="LUXX SCRIPT"
           primaryAction={{
-            label: "Get Script",
-            onClick: () => copyText(status?.loaderCommand || "", "LUXX loader copied to clipboard"),
+            label: "Configure Configs",
+            onClick: () => navigate("/dashboard"),
           }}
-          secondaryAction={{ label: "Open Panel", onClick: () => navigate("/dashboard") }}
           showKey={showKey}
           onToggleKey={() => setShowKey((value) => !value)}
           onCopyKey={() => copyText(licenseKey, "License key copied to clipboard")}
           copied={copied}
           licenseKey={licenseKey}
-          onDownload={downloadActiveConfig}
         />
       </div>
     </div>
@@ -169,15 +167,10 @@ function ActionTile({
           </div>
         </div>
         <div className="mt-4 border border-white/[0.05] bg-[#0a0d15] px-4 py-4 font-mono text-sm tracking-[0.32em] text-[#dbe7ff]">
-          {showKey ? licenseKey : "LUXX-XXXX-XXXX-XXXX"}
+          {showKey ? licenseKey : "********"}
         </div>
       </div>
 
-      {onDownload ? (
-        <button onClick={onDownload} className="luxx-button mt-4 w-full">
-          Download Active Config
-        </button>
-      ) : null}
     </motion.section>
   );
 }

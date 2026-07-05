@@ -261,6 +261,7 @@ export function publicUser(user, licenseKeys = []) {
   return {
     id: user.id,
     email: user.email,
+    discordUsername: user.discordUsername || null,
     displayName: user.displayName,
     role: user.role,
     isBanned: user.isBanned,

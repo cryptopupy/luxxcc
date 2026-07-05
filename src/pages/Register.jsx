@@ -12,6 +12,7 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [licenseKey, setLicenseKey] = useState("");
+  const [discordUsername, setDiscordUsername] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -44,6 +45,7 @@ export default function Register() {
         displayName: username,
         password,
         licenseKey,
+        discordUsername,
       });
       await checkUserAuth();
       navigate("/", { replace: true });
@@ -104,16 +106,15 @@ export default function Register() {
           placeholder="Enter your license key"
           className={inputClassName}
         />
+        <Field
+          label="Discord Username *"
+          value={discordUsername}
+          onChange={setDiscordUsername}
+          placeholder="Discord Username (e.g. user#1234 or user)"
+          className={inputClassName}
+        />
 
-        <label className="flex items-start gap-3 border border-white/[0.07] bg-[#0f141d] px-4 py-3 text-sm text-[#9d9d9d]">
-          <input
-            type="checkbox"
-            checked={acceptTerms}
-            onChange={(event) => setAcceptTerms(event.target.checked)}
-            className="mt-1 h-4 w-4 rounded border-white/20 bg-transparent"
-          />
-          <span>Use the provided license only for your own account and keep your loader command private.</span>
-        </label>
+
 
         <button
           type="submit"

@@ -153,10 +153,11 @@ export default function AdminPanel() {
         {activeTab === "users" && (
           <motion.div key="users" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}>
             <DataTable
-              headers={["Display", "Username", "Role", "Status", "Action"]}
+              headers={["Display", "Username", "Discord", "Role", "Status", "Action"]}
               rows={overview.users.map((user) => [
                 user.displayName || "Unnamed",
                 user.email,
+                user.discordUsername || "Not linked",
                 user.role,
                 user.isBanned ? "Banned" : "Active",
                 <ActionText key={user.id} onClick={() => toggleBan(user)}>

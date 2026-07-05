@@ -190,8 +190,9 @@ export function luxxApiPlugin() {
           const password = String(body.password || "");
           const displayName = String(body.displayName || body.username || "").trim() || email;
           const licenseKey = String(body.licenseKey || "").trim().toUpperCase();
-          if (!email || !password || password.length < 8 || !licenseKey) {
-            return json(res, 400, { error: "Username, password, and license key are required" });
+          const discordUsername = String(body.discordUsername || "").trim();
+          if (!email || !password || password.length < 8 || !licenseKey || !discordUsername) {
+            return json(res, 400, { error: "Username, password, discord username, and license key are required" });
           }
 
           let responsePayload = null;
@@ -212,6 +213,7 @@ export function luxxApiPlugin() {
               email,
               passwordHash: createPasswordHash(password),
               displayName,
+              discordUsername,
               role: "user",
               isBanned: false,
               licenseKeyId: license.id,

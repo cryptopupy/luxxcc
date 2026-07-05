@@ -1,7 +1,7 @@
 {
   "meta": {
     "createdAt": "2026-07-04T16:44:53.910Z",
-    "updatedAt": "2026-07-04T18:36:53.604Z",
+    "updatedAt": "2026-07-05T09:23:11.595Z",
     "scriptPollingWindowMs": 90000
   },
   "panelDefaults": {
@@ -22,8 +22,8 @@
       "isBanned": false,
       "licenseKeyId": "3f15b7bf4b887c3c9acc0ba909e82606",
       "createdAt": "2026-07-04T16:44:54.028Z",
-      "updatedAt": "2026-07-04T18:31:28.171Z",
-      "lastLoginAt": "2026-07-04T18:31:28.171Z"
+      "updatedAt": "2026-07-05T09:22:28.411Z",
+      "lastLoginAt": "2026-07-05T09:22:28.411Z"
     }
   ],
   "licenseKeys": [
@@ -86,6 +86,55 @@
     }
   ],
   "auditLogs": [
+    {
+      "id": "bfd387db554aa57c834315f6e6669120",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "auth.login",
+      "details": "Signed in from Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0",
+      "createdAt": "2026-07-05T09:22:28.411Z"
+    },
+    {
+      "id": "7b81a93440d685a49f38164004080b57",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "auth.login",
+      "details": "Signed in from Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0",
+      "createdAt": "2026-07-05T09:13:14.318Z"
+    },
+    {
+      "id": "d5d21a2c60cb78d3526a5cc6cea73ecd",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "auth.password_reset.requested",
+      "details": "Password reset requested",
+      "createdAt": "2026-07-05T09:13:03.373Z"
+    },
+    {
+      "id": "4e49b6b7895cf674fc9872ff18701aa9",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "auth.login",
+      "details": "Signed in from Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0",
+      "createdAt": "2026-07-05T09:12:53.291Z"
+    },
+    {
+      "id": "c04ef818f2879d40d84f5073040cd131",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "auth.login",
+      "details": "Signed in from Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0",
+      "createdAt": "2026-07-05T09:07:01.974Z"
+    },
+    {
+      "id": "3313392d9bbceaa794fe0e7f82af76b2",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "auth.login",
+      "details": "Signed in from Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0",
+      "createdAt": "2026-07-05T08:51:56.435Z"
+    },
+    {
+      "id": "51f1ff7277ba7df6b07fecd9293d072f",
+      "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "action": "auth.login",
+      "details": "Signed in from Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0",
+      "createdAt": "2026-07-05T08:41:14.332Z"
+    },
     {
       "id": "20bf82b02f9989b82a8f4f28546dcf75",
       "actorUserId": "ed01e13fede0f0d62c6e15d393d0e33c",
@@ -220,5 +269,13 @@
       "createdAt": "2026-07-04T16:44:54.029Z"
     }
   ],
-  "passwordResets": []
+  "passwordResets": [
+    {
+      "id": "245823f8b1173f51d8b295587231378a",
+      "userId": "ed01e13fede0f0d62c6e15d393d0e33c",
+      "token": "2c95723100010fff4f7d5b42eefe8f95056c153cf23c6c6a",
+      "createdAt": "2026-07-05T09:13:03.373Z",
+      "expiresAt": "2026-07-05T09:43:03.373Z"
+    }
+  ]
 }
