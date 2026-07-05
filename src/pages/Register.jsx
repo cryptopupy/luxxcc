@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Loader2 } from "lucide-react";
+import { Loader2, DiscIcon as Discord } from "lucide-react";
 import AuthLayout from "@/components/AuthLayout";
 import { api } from "@/api/client";
 import { useAuth } from "@/lib/AuthContext";
@@ -13,6 +13,7 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [licenseKey, setLicenseKey] = useState("");
   const [discordUsername, setDiscordUsername] = useState("");
+  const [discordId, setDiscordId] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
