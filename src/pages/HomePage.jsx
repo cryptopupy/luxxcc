@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Check, Copy, Eye, EyeOff } from "lucide-react";
-import { motion } from "framer-motion";
+import { Check, Copy, Eye, EyeOff, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/components/ui/use-toast";
 import { api } from "@/api/client";
 import { useAuth } from "@/lib/AuthContext";
@@ -14,6 +14,7 @@ export default function HomePage() {
   const [copied, setCopied] = useState(false);
   const [status, setStatus] = useState(home);
   const [activeConfig, setActiveConfig] = useState(null);
+  const [showConnectModal, setShowConnectModal] = useState(false);
 
   useEffect(() => {
     setStatus(home);
@@ -39,7 +40,7 @@ export default function HomePage() {
     return () => window.clearInterval(timer);
   }, []);
 
-  const licenseKey = status?.loaderCommand?.match(/license=([^"]+)/)?.[1] || "LUXX-XXXX-XXXX-XXXX";
+  const licenseKey = user?.licenseKeyString || "LUXX-XXXX-XXXX-XXXX";
 
   const copyText = async (value, message) => {
     await navigator.clipboard.writeText(value);
@@ -84,12 +85,63 @@ export default function HomePage() {
         </div>
       </motion.section>
 
-      <motion.section
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="luxx-surface relative overflow-hidden"
+      <div className="mx-auto max-w-4xl">
+        <ActionTile
+          title="LUXX SCRIPT"
+          primaryAction={{
+            label: "Configure Configs",
+            onClick: () => navigate("/configs"),
+          }}
+          secondaryAction={{
+            label: "Connect Script",
+            onClick: () => setShowConnectModal(true),
+          }}
+          showKey={showKey}
+          onToggleKey={() => setShowKey((value) => !value)}
+          onCopyKey={() => copyText(licenseKey, "License key copied to clipboard")}
+          copied={copied}
+          licenseKey={licenseKey}
+        />
+      </div>
+
+      <AnimatePresence>
+        {showConnectModal && (
+          <ConnectScriptModal
+            hasValidGame={hasValidGame}
+            status={status}
+            onRefresh={refreshStatus}
+            onClose={() => setShowConnectModal(false)}
+          />
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function ConnectScriptModal({ hasValidGame, status, onRefresh, onClose }) {
+  return (
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
+      <motion.div
+        className="luxx-surface relative w-full max-w-lg overflow-hidden"
+        initial={{ opacity: 0, scale: 0.95, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 12 }}
+        transition={{ duration: 0.2 }}
+        onClick={(event) => event.stopPropagation()}
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(58,107,194,0.16),_transparent_56%)]" />
+        <button
+          onClick={onClose}
+          className="luxx-icon-button absolute right-4 top-4 z-10"
+        >
+          <X size={16} />
+        </button>
         <div className="relative px-6 py-12 text-center sm:px-8 sm:py-16">
           {hasValidGame ? (
             <div className="mx-auto flex h-10 items-center justify-center">
@@ -115,27 +167,12 @@ export default function HomePage() {
               ? `${status?.executor || "Unknown executor"} is online and the web panel is ready.`
               : null}
           </p>
-          <button onClick={refreshStatus} className="luxx-button mt-8">
+          <button onClick={onRefresh} className="luxx-button mt-8">
             Refresh Status
           </button>
         </div>
-      </motion.section>
-
-      <div className="mx-auto max-w-4xl">
-        <ActionTile
-          title="LUXX SCRIPT"
-          primaryAction={{
-            label: "Configure Configs",
-            onClick: () => navigate("/configs"),
-          }}
-          showKey={showKey}
-          onToggleKey={() => setShowKey((value) => !value)}
-          onCopyKey={() => copyText(licenseKey, "License key copied to clipboard")}
-          copied={copied}
-          licenseKey={licenseKey}
-        />
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
