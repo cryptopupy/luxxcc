@@ -173,7 +173,7 @@ export default function Dashboard() {
 
       <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="rounded-[18px] border border-white/10 overflow-hidden">
         <div
-          className="editor-scrollbar flex"
+          className="editor-scrollbar flex items-start"
           style={{
             height: "70vh",
             maxHeight: "90vh",
@@ -207,6 +207,7 @@ export default function Dashboard() {
             style={{
               backgroundColor: "#131825",
               fontFamily: '"Fira Code", "Fira Mono", monospace',
+              overflow: "visible",
             }}
             spellCheck={false}
           />

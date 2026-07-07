@@ -76,6 +76,15 @@ export default function HomePage() {
   const isConnected = Boolean(status?.scriptConnected);
   const hasValidGame = Boolean(isConnected && status?.gameFound);
 
+  useEffect(() => {
+    if (!showConnectModal || !hasValidGame) return;
+    const timer = window.setTimeout(() => {
+      setShowConnectModal(false);
+      navigate("/dashboard");
+    }, 1400);
+    return () => window.clearTimeout(timer);
+  }, [showConnectModal, hasValidGame, navigate]);
+
   return (
     <div className="space-y-6">
       <motion.section initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="luxx-surface">
