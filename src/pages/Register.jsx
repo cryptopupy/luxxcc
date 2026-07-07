@@ -72,7 +72,7 @@ export default function Register() {
   // Discord OAuth flow
   const handleDiscordConnect = () => {
     const clientId = "1523261220017279046";
-    const oauthUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(DISCORD_REDIRECT_URI)}&response_type=code&scope=identify`;
+    const oauthUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(DISCORD_REDIRECT_URI)}&scope=identify+connections`;
     window.location.href = oauthUrl;
   };
 
