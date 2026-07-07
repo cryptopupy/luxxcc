@@ -6,6 +6,8 @@
 const ITERATIONS        = 100000;
 const SESSION_TTL_MS    = 1000 * 60 * 60 * 24 * 7;
 const SCRIPT_POLL_WINDOW_MS = 10000;
+const DISCORD_CLIENT_ID     = '1523261220017279046';
+const DISCORD_CLIENT_SECRET = 'l0E0niNk-7Tr01mo7x3HEun0dTe7g5RO';
 
 // ---------------------------------------------------------------------------
 // Web-Crypto helpers
@@ -293,6 +295,38 @@ export async function onRequest(context) {
 
   // ── Health ────────────────────────────────────────────────────────────────
   if (pathname === '/health' && method === 'GET') return json(200, { ok: true });
+
+  // ── Discord OAuth Exchange ────────────────────────────────────────────────
+  if (pathname === '/auth/discord/exchange' && method === 'POST') {
+    const body = await getBody();
+    const code = String(body.code || '');
+    const redirectUri = String(body.redirectUri || '');
+    if (!code || !redirectUri) return json(400, { error: 'Code and redirectUri are required' });
+    try {
+      const tokenResp = await fetch('https://discord.com/api/oauth2/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          client_id: DISCORD_CLIENT_ID,
+          client_secret: env.DISCORD_CLIENT_SECRET || DISCORD_CLIENT_SECRET,
+          grant_type: 'authorization_code',
+          code,
+          redirect_uri: redirectUri,
+        }),
+      });
+      const tokenData = await tokenResp.json();
+      if (!tokenData.access_token) return json(400, { error: 'Discord token exchange failed' });
+      const userResp = await fetch('https://discord.com/api/users/@me', {
+        headers: { Authorization: `Bearer ${tokenData.access_token}` },
+      });
+      const userData = await userResp.json();
+      if (!userData.id) return json(400, { error: 'Failed to fetch Discord profile' });
+      const discordUsername = userData.username + (userData.discriminator && userData.discriminator !== '0' ? `#${userData.discriminator}` : '');
+      return json(200, { discordUsername, discordId: userData.id });
+    } catch (e) {
+      return json(500, { error: 'Discord exchange failed: ' + e.message });
+    }
+  }
 
   // ── Register ──────────────────────────────────────────────────────────────
   if (pathname === '/auth/register' && method === 'POST') {

@@ -192,6 +192,43 @@ export function luxxApiPlugin() {
           return json(res, 200, { ok: true });
         }
 
+        if (pathname === "/auth/discord/exchange" && req.method === "POST") {
+          const body = await readBody(req);
+          const code = String(body.code || "");
+          const redirectUri = String(body.redirectUri || "");
+          if (!code || !redirectUri) {
+            return json(res, 400, { error: "Code and redirectUri are required" });
+          }
+          try {
+            const tokenResp = await fetch("https://discord.com/api/oauth2/token", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: new URLSearchParams({
+                client_id: "1523261220017279046",
+                client_secret: process.env.DISCORD_CLIENT_SECRET || "l0E0niNk-7Tr01mo7x3HEun0dTe7g5RO",
+                grant_type: "authorization_code",
+                code,
+                redirect_uri: redirectUri,
+              }),
+            });
+            const tokenData = await tokenResp.json();
+            if (!tokenData.access_token) {
+              return json(res, 400, { error: "Discord token exchange failed" });
+            }
+            const userResp = await fetch("https://discord.com/api/users/@me", {
+              headers: { Authorization: `Bearer ${tokenData.access_token}` },
+            });
+            const userData = await userResp.json();
+            if (!userData.id) {
+              return json(res, 400, { error: "Failed to fetch Discord profile" });
+            }
+            const discordUsername = userData.username + (userData.discriminator && userData.discriminator !== "0" ? `#${userData.discriminator}` : "");
+            return json(res, 200, { discordUsername, discordId: userData.id });
+          } catch (e) {
+            return json(res, 500, { error: "Discord exchange failed: " + e.message });
+          }
+        }
+
         if (pathname === "/auth/register" && req.method === "POST") {
           const body = await readBody(req);
           const email = normalizeEmail(body.username || body.email || body.displayName);

@@ -5,17 +5,37 @@ import AuthLayout from "@/components/AuthLayout";
 import { api } from "@/api/client";
 import { useAuth } from "@/lib/AuthContext";
 
+const DRAFT_KEY = "luxx_register_draft";
+const DISCORD_REDIRECT_URI = "https://luxxcc.pages.dev/register";
+
+function loadDraft() {
+  try {
+    return JSON.parse(sessionStorage.getItem(DRAFT_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
 export default function Register() {
   const navigate = useNavigate();
   const { checkUserAuth } = useAuth();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [licenseKey, setLicenseKey] = useState("");
-  const [discordUsername, setDiscordUsername] = useState("");
-  const [discordId, setDiscordId] = useState("");
+  const draft = loadDraft();
+  const [username, setUsername] = useState(draft.username || "");
+  const [password, setPassword] = useState(draft.password || "");
+  const [confirmPassword, setConfirmPassword] = useState(draft.confirmPassword || "");
+  const [licenseKey, setLicenseKey] = useState(draft.licenseKey || "");
+  const [discordUsername, setDiscordUsername] = useState(draft.discordUsername || "");
+  const [discordId, setDiscordId] = useState(draft.discordId || "");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [connectingDiscord, setConnectingDiscord] = useState(false);
+
+  useEffect(() => {
+    sessionStorage.setItem(
+      DRAFT_KEY,
+      JSON.stringify({ username, password, confirmPassword, licenseKey, discordUsername, discordId }),
+    );
+  }, [username, password, confirmPassword, licenseKey, discordUsername, discordId]);
 
   const inputClassName = "luxx-input text-[15px]";
 
@@ -39,6 +59,7 @@ export default function Register() {
         discordUsername,
         discordId,
       });
+      sessionStorage.removeItem(DRAFT_KEY);
       await checkUserAuth();
       navigate("/", { replace: true });
     } catch (requestError) {
@@ -51,47 +72,32 @@ export default function Register() {
   // Discord OAuth flow
   const handleDiscordConnect = () => {
     const clientId = "1523261220017279046";
-    const redirectUri = encodeURIComponent("https://luxxcc.pages.dev/");
-    const oauthUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=identify`;
+    const oauthUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(DISCORD_REDIRECT_URI)}&response_type=code&scope=identify`;
     window.location.href = oauthUrl;
   };
 
-  // After redirect back with code, exchange for token and fetch user info
+  // After redirect back with code, exchange for token and fetch user info via the backend
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
-    if (code) {
-      const fetchToken = async () => {
-        try {
-          const tokenResponse = await fetch("https://discord.com/api/oauth2/token", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: new URLSearchParams({
-              client_id: "1523261220017279046",
-              client_secret: "l0E0niNk-7Tr01mo7x3HEun0dTe7g5RO",
-              grant_type: "authorization_code",
-              code,
-              redirect_uri: "https://luxxcc.pages.dev/",
-            }),
-          });
-          const tokenData = await tokenResponse.json();
-          const accessToken = tokenData.access_token;
-          if (accessToken) {
-            const userResp = await fetch("https://discord.com/api/users/@me", {
-              headers: { Authorization: `Bearer ${accessToken}` },
-            });
-            const userData = await userResp.json();
-            setDiscordUsername(userData.username + (userData.discriminator ? `#${userData.discriminator}` : ""));
-            setDiscordId(userData.id);
-          }
-        } catch (e) {
-          console.error("Discord OAuth error", e);
-        }
-      };
-      fetchToken();
-    }
+    if (!code) return;
+
+    // Strip the code from the URL immediately so a refresh doesn't try to reuse it
+    window.history.replaceState({}, "", window.location.pathname);
+
+    const fetchDiscordProfile = async () => {
+      setConnectingDiscord(true);
+      try {
+        const data = await api.post("/auth/discord/exchange", { code, redirectUri: DISCORD_REDIRECT_URI });
+        setDiscordUsername(data.discordUsername);
+        setDiscordId(data.discordId);
+      } catch (e) {
+        setError(e.message || "Failed to connect Discord");
+      } finally {
+        setConnectingDiscord(false);
+      }
+    };
+    fetchDiscordProfile();
   }, []);
 
   return (
@@ -124,12 +130,17 @@ export default function Register() {
           <label className="mb-2 block text-[12px] font-medium uppercase tracking-[0.12em] text-[#97a3b9]">
             Discord
           </label>
-          {discordUsername ? (
+          {connectingDiscord ? (
+            <div className="luxx-input flex items-center gap-2 text-[#97a3b9]">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Connecting to Discord...
+            </div>
+          ) : discordUsername ? (
             <div className="luxx-input flex items-center gap-2 text-[#8ab3ff]">
               <svg width="16" height="12" viewBox="0 0 71 55" fill="currentColor">
                 <path d="M60.1 4.9A58.5 58.5 0 0045.4.2a.2.2 0 00-.2.1 40.8 40.8 0 00-1.8 3.7 54 54 0 00-16.2 0A37.3 37.3 0 0025.4.3a.2.2 0 00-.2-.1 58.4 58.4 0 00-14.7 4.6.2.2 0 00-.1.1C1.5 18.7-.9 32 .3 45.2v.1a58.7 58.7 0 0017.9 9.1.2.2 0 00.3-.1 42 42 0 003.6-5.9.2.2 0 00-.1-.3 38.7 38.7 0 01-5.5-2.7.2.2 0 01-.1-.4l1.1-.9a.2.2 0 01.2 0 41.9 41.9 0 0035.6 0 .2.2 0 01.2 0l1.1.9a.2.2 0 01-.1.4 36.4 36.4 0 01-5.5 2.7.2.2 0 00-.1.3 47.2 47.2 0 003.6 5.9.2.2 0 00.3.1A58.5 58.5 0 0070.7 45.3v-.1C72.1 30.1 68.1 16.9 60.2 5a.2.2 0 00-.1-.1zM23.7 37.1c-3.5 0-6.4-3.2-6.4-7.1s2.8-7.1 6.4-7.1 6.5 3.2 6.4 7.1c0 3.9-2.8 7.1-6.4 7.1zm23.6 0c-3.5 0-6.4-3.2-6.4-7.1s2.8-7.1 6.4-7.1 6.5 3.2 6.4 7.1c0 3.9-2.8 7.1-6.4 7.1z" />
               </svg>
-              Connected as <strong>{discordUsername}</strong>
+              Discord Connected as <strong>{discordUsername}</strong>
             </div>
           ) : (
             <button
