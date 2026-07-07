@@ -121,7 +121,7 @@ export default function HomePage() {
 function ConnectScriptModal({ hasValidGame, status, onRefresh, onClose }) {
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 px-4 backdrop-blur-md"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
