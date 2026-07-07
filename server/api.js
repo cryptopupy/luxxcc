@@ -640,6 +640,43 @@ export function luxxApiPlugin() {
           return json(res, payload.status, payload.body);
         }
 
+        if (pathname.startsWith("/admin/license-keys/") && req.method === "PUT") {
+          const licenseId = pathname.split("/")[3];
+          const body = await readBody(req);
+          let payload = null;
+          updateState((state) => {
+            const user = ensureAdmin(req, res, state);
+            if (!user) {
+              payload = "handled";
+              return state;
+            }
+            const record = state.licenseKeys.find((item) => item.id === licenseId);
+            if (!record) {
+              payload = { status: 404, body: { error: "License key not found" } };
+              return state;
+            }
+            const rawKey = String(body.key || "").trim().toUpperCase();
+            if (!rawKey) {
+              payload = { status: 400, body: { error: "License key is required" } };
+              return state;
+            }
+            const newHash = hashLicenseKey(rawKey);
+            if (state.licenseKeys.some((item) => item.id !== licenseId && item.keyHash === newHash)) {
+              payload = { status: 409, body: { error: "That license key already exists" } };
+              return state;
+            }
+            const oldPreview = record.keyPreview;
+            record.keyPreview = rawKey;
+            record.keyHash = newHash;
+            record.updatedAt = new Date().toISOString();
+            addAuditLog(state, "license.rotated", user.id, `Changed license ${oldPreview} to ${rawKey}`);
+            payload = { status: 200, body: { licenseKey: sanitizeLicenseKey(record) } };
+            return state;
+          });
+          if (payload === "handled") return;
+          return json(res, payload.status, payload.body);
+        }
+
         if (pathname.startsWith("/admin/users/") && req.method === "PUT") {
           const targetUserId = pathname.split("/")[3];
           const body = await readBody(req);

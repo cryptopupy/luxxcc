@@ -19,6 +19,7 @@ export default function AdminPanel() {
   const [overview, setOverview] = useState({ users: [], licenseKeys: [], configs: [], purchases: [], auditLogs: [], panelDefaults: null });
   const [manualKey, setManualKey] = useState("");
   const [manualNote, setManualNote] = useState("");
+  const [rotateDrafts, setRotateDrafts] = useState({});
   const [defaultTitle, setDefaultTitle] = useState("");
   const [defaultTier, setDefaultTier] = useState("Blatant");
   const [defaultDescription, setDefaultDescription] = useState("");
@@ -49,6 +50,15 @@ export default function AdminPanel() {
     toast({ title: "License created", description: `${manualKey.toUpperCase()} is ready to distribute.` });
     setManualKey("");
     setManualNote("");
+    await loadOverview();
+  };
+
+  const rotateKey = async (key) => {
+    const draft = (rotateDrafts[key.id] || "").trim();
+    if (!draft) return;
+    await api.put(`/admin/license-keys/${key.id}`, { key: draft.toUpperCase() });
+    toast({ title: "License changed", description: `${key.keyPreview} is now ${draft.toUpperCase()}.` });
+    setRotateDrafts((prev) => ({ ...prev, [key.id]: "" }));
     await loadOverview();
   };
 
@@ -171,7 +181,7 @@ export default function AdminPanel() {
         {activeTab === "keys" && (
           <motion.div key="keys" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}>
             <DataTable
-              headers={["Key", "Status", "Claimed By", "Created", "Copy"]}
+              headers={["Key", "Status", "Claimed By", "Created", "Copy", "Change Key"]}
               rows={overview.licenseKeys.map((key) => [
                 <span key={`${key.id}-preview`} className="font-mono text-[#d7e6ff]">{key.keyPreview}</span>,
                 key.status,
@@ -187,6 +197,15 @@ export default function AdminPanel() {
                 >
                   <Copy size={12} />
                 </button>,
+                <div key={`${key.id}-rotate`} className="flex gap-2">
+                  <input
+                    value={rotateDrafts[key.id] || ""}
+                    onChange={(event) => setRotateDrafts((prev) => ({ ...prev, [key.id]: event.target.value }))}
+                    placeholder="New key value"
+                    className="luxx-input w-40"
+                  />
+                  <ActionText onClick={() => rotateKey(key)}>Change</ActionText>
+                </div>,
               ])}
             />
           </motion.div>

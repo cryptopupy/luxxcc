@@ -559,6 +559,26 @@ export async function onRequest(context) {
     return json(201, { licenseKey: rowToLicense(await db.prepare('SELECT * FROM license_keys WHERE id=?').bind(lid).first()) });
   }
 
+  // ── Admin Rotate License Key ─────────────────────────────────────────────
+  if (pathname.startsWith('/admin/license-keys/') && method === 'PUT') {
+    const [admin, err] = await requireAdmin();
+    if (err) return err;
+    const licenseId = pathname.split('/')[3];
+    const body   = await getBody();
+    const record = await dbLicenseById(db, licenseId);
+    if (!record) return json(404, { error: 'License key not found' });
+    const rawKey = String(body.key || '').trim().toUpperCase();
+    if (!rawKey) return json(400, { error: 'License key is required' });
+    const newHash = await hashLicenseKey(rawKey);
+    if (await db.prepare('SELECT id FROM license_keys WHERE key_hash=? AND id!=?').bind(newHash, licenseId).first()) {
+      return json(409, { error: 'That license key already exists' });
+    }
+    const now = new Date().toISOString();
+    await db.prepare('UPDATE license_keys SET key_preview=?,key_hash=?,updated_at=? WHERE id=?').bind(rawKey, newHash, now, licenseId).run();
+    await dbAuditLog(db, 'license.rotated', admin.id, `Changed license ${record.keyPreview} to ${rawKey}`);
+    return json(200, { licenseKey: rowToLicense(await db.prepare('SELECT * FROM license_keys WHERE id=?').bind(licenseId).first()) });
+  }
+
   // ── Admin Update User ─────────────────────────────────────────────────────
   if (pathname.startsWith('/admin/users/') && method === 'PUT') {
     const [, err] = await requireAdmin();
