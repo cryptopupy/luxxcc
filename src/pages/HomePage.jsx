@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { Check, Copy, Eye, EyeOff, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -119,7 +120,7 @@ export default function HomePage() {
 }
 
 function ConnectScriptModal({ hasValidGame, status, onRefresh, onClose }) {
-  return (
+  return createPortal(
     <motion.div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 px-4 backdrop-blur-md"
       initial={{ opacity: 0 }}
@@ -172,7 +173,8 @@ function ConnectScriptModal({ hasValidGame, status, onRefresh, onClose }) {
           </button>
         </div>
       </motion.div>
-    </motion.div>
+    </motion.div>,
+    document.body,
   );
 }
 
