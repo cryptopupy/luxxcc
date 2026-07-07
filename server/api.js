@@ -560,6 +560,7 @@ export function luxxApiPlugin() {
             purchases: state.purchases,
             auditLogs: state.auditLogs,
             panelDefaults: sanitizePanelDefaults(state.panelDefaults),
+            sessions: state.scriptSessions,
           });
         }
 
@@ -671,6 +672,35 @@ export function luxxApiPlugin() {
             record.updatedAt = new Date().toISOString();
             addAuditLog(state, "license.rotated", user.id, `Changed license ${oldPreview} to ${rawKey}`);
             payload = { status: 200, body: { licenseKey: sanitizeLicenseKey(record) } };
+            return state;
+          });
+          if (payload === "handled") return;
+          return json(res, payload.status, payload.body);
+        }
+
+        if (pathname.startsWith("/admin/license-keys/") && req.method === "DELETE") {
+          const licenseId = pathname.split("/")[3];
+          let payload = null;
+          updateState((state) => {
+            const user = ensureAdmin(req, res, state);
+            if (!user) {
+              payload = "handled";
+              return state;
+            }
+            const record = state.licenseKeys.find((item) => item.id === licenseId);
+            if (!record) {
+              payload = { status: 404, body: { error: "License key not found" } };
+              return state;
+            }
+            state.licenseKeys = state.licenseKeys.filter((item) => item.id !== licenseId);
+            state.users.forEach((item) => {
+              if (item.licenseKeyId === licenseId) {
+                item.licenseKeyId = null;
+                item.updatedAt = new Date().toISOString();
+              }
+            });
+            addAuditLog(state, "license.deleted", user.id, `Deleted license ${record.keyPreview}`);
+            payload = { status: 200, body: { ok: true } };
             return state;
           });
           if (payload === "handled") return;

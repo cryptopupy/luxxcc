@@ -158,7 +158,7 @@ function rowToPanelDefaults(r) {
 // ---------------------------------------------------------------------------
 
 function publicUser(u, licKeyStr = null) {
-  return { id: u.id, email: u.email, displayName: u.displayName, discordUsername: u.discordUsername || null, role: u.role, isBanned: u.isBanned, createdAt: u.createdAt, updatedAt: u.updatedAt, lastLoginAt: u.lastLoginAt, licenseKeyString: licKeyStr || null };
+  return { id: u.id, email: u.email, displayName: u.displayName, discordUsername: u.discordUsername || null, discordId: u.discordId || null, role: u.role, isBanned: u.isBanned, createdAt: u.createdAt, updatedAt: u.updatedAt, lastLoginAt: u.lastLoginAt, licenseKeyString: licKeyStr || null };
 }
 
 function sanitizeConfig(config, ownerUser = null, session = null, licenseKey = null) {
@@ -512,6 +512,7 @@ export async function onRequest(context) {
     const { results: cRows } = await db.prepare('SELECT * FROM configs').all();
     const { results: pRows } = await db.prepare('SELECT * FROM purchases').all();
     const { results: aRows } = await db.prepare('SELECT * FROM audit_logs ORDER BY created_at DESC LIMIT 250').all();
+    const { results: sRows } = await db.prepare('SELECT * FROM script_sessions').all();
     const defaults = await dbPanelDefaults(db);
     const licMap  = {};
     lRows.forEach(r => { const l = rowToLicense(r); licMap[l.id] = l; });
@@ -524,6 +525,7 @@ export async function onRequest(context) {
       purchases: pRows,
       auditLogs: aRows,
       panelDefaults: defaults,
+      sessions: sRows.map(rowToSession),
     });
   }
 
@@ -577,6 +579,21 @@ export async function onRequest(context) {
     await db.prepare('UPDATE license_keys SET key_preview=?,key_hash=?,updated_at=? WHERE id=?').bind(rawKey, newHash, now, licenseId).run();
     await dbAuditLog(db, 'license.rotated', admin.id, `Changed license ${record.keyPreview} to ${rawKey}`);
     return json(200, { licenseKey: rowToLicense(await db.prepare('SELECT * FROM license_keys WHERE id=?').bind(licenseId).first()) });
+  }
+
+  // ── Admin Delete License Key ─────────────────────────────────────────────
+  if (pathname.startsWith('/admin/license-keys/') && method === 'DELETE') {
+    const [admin, err] = await requireAdmin();
+    if (err) return err;
+    const licenseId = pathname.split('/')[3];
+    const record = await dbLicenseById(db, licenseId);
+    if (!record) return json(404, { error: 'License key not found' });
+    await db.batch([
+      db.prepare('UPDATE users SET license_key_id=NULL, updated_at=? WHERE license_key_id=?').bind(new Date().toISOString(), licenseId),
+      db.prepare('DELETE FROM license_keys WHERE id=?').bind(licenseId),
+    ]);
+    await dbAuditLog(db, 'license.deleted', admin.id, `Deleted license ${record.keyPreview}`);
+    return json(200, { ok: true });
   }
 
   // ── Admin Update User ─────────────────────────────────────────────────────

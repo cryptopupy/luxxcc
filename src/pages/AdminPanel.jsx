@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { BarChart3, Copy, FileCode2, KeyRound, Save, Shield, ShoppingBag, Users } from "lucide-react";
+import { BarChart3, Copy, FileCode2, KeyRound, Save, Shield, ShoppingBag, Trash2, Users } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { api } from "@/api/client";
 
@@ -16,10 +16,11 @@ export default function AdminPanel() {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("users");
   const [loading, setLoading] = useState(true);
-  const [overview, setOverview] = useState({ users: [], licenseKeys: [], configs: [], purchases: [], auditLogs: [], panelDefaults: null });
+  const [overview, setOverview] = useState({ users: [], licenseKeys: [], configs: [], purchases: [], auditLogs: [], panelDefaults: null, sessions: [] });
   const [manualKey, setManualKey] = useState("");
   const [manualNote, setManualNote] = useState("");
   const [rotateDrafts, setRotateDrafts] = useState({});
+  const [viewingUser, setViewingUser] = useState(null);
   const [defaultTitle, setDefaultTitle] = useState("");
   const [defaultTier, setDefaultTier] = useState("Blatant");
   const [defaultDescription, setDefaultDescription] = useState("");
@@ -59,6 +60,20 @@ export default function AdminPanel() {
     await api.put(`/admin/license-keys/${key.id}`, { key: draft.toUpperCase() });
     toast({ title: "License changed", description: `${key.keyPreview} is now ${draft.toUpperCase()}.` });
     setRotateDrafts((prev) => ({ ...prev, [key.id]: "" }));
+    await loadOverview();
+  };
+
+  const deleteKey = async (key) => {
+    if (!window.confirm(`Delete license ${key.keyPreview}? This unlinks any account using it.`)) return;
+    await api.delete(`/admin/license-keys/${key.id}`);
+    toast({ title: "License deleted", description: `${key.keyPreview} was removed.` });
+    await loadOverview();
+  };
+
+  const changeRole = async (user) => {
+    const nextRole = user.role === "admin" ? "user" : "admin";
+    await api.put(`/admin/users/${user.id}`, { role: nextRole });
+    toast({ title: "Role updated", description: `${user.email} is now ${nextRole}.` });
     await loadOverview();
   };
 
@@ -163,16 +178,18 @@ export default function AdminPanel() {
         {activeTab === "users" && (
           <motion.div key="users" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}>
             <DataTable
-              headers={["Display", "Username", "Discord", "Role", "Status", "Action"]}
+              headers={["Display", "Username", "Discord", "Role", "Status", "Actions"]}
               rows={overview.users.map((user) => [
                 user.displayName || "Unnamed",
                 user.email,
                 user.discordUsername || "Not linked",
                 user.role,
                 user.isBanned ? "Banned" : "Active",
-                <ActionText key={user.id} onClick={() => toggleBan(user)}>
-                  {user.isBanned ? "Unban" : "Ban"}
-                </ActionText>,
+                <div key={user.id} className="flex gap-2">
+                  <ActionText onClick={() => setViewingUser(user)}>View</ActionText>
+                  <ActionText onClick={() => changeRole(user)}>{user.role === "admin" ? "Demote" : "Promote"}</ActionText>
+                  <ActionText onClick={() => toggleBan(user)}>{user.isBanned ? "Unban" : "Ban"}</ActionText>
+                </div>,
               ])}
             />
           </motion.div>
@@ -181,7 +198,7 @@ export default function AdminPanel() {
         {activeTab === "keys" && (
           <motion.div key="keys" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}>
             <DataTable
-              headers={["Key", "Status", "Claimed By", "Created", "Copy", "Change Key"]}
+              headers={["Key", "Status", "Claimed By", "Created", "Copy", "Change Key", "Delete"]}
               rows={overview.licenseKeys.map((key) => [
                 <span key={`${key.id}-preview`} className="font-mono text-[#d7e6ff]">{key.keyPreview}</span>,
                 key.status,
@@ -206,6 +223,13 @@ export default function AdminPanel() {
                   />
                   <ActionText onClick={() => rotateKey(key)}>Change</ActionText>
                 </div>,
+                <button
+                  key={`${key.id}-delete`}
+                  onClick={() => deleteKey(key)}
+                  className="inline-flex rounded-md border border-red-500/30 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-red-400"
+                >
+                  <Trash2 size={12} />
+                </button>,
               ])}
             />
           </motion.div>
@@ -308,6 +332,73 @@ export default function AdminPanel() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <AnimatePresence>
+        {viewingUser && (
+          <UserDetailsModal
+            user={viewingUser}
+            license={overview.licenseKeys.find((key) => key.id === viewingUser.licenseKeyId || key.claimedByUserId === viewingUser.id)}
+            session={overview.sessions?.find((s) => s.userId === viewingUser.id)}
+            configs={overview.configs.filter((c) => c.ownerId === viewingUser.id)}
+            onClose={() => setViewingUser(null)}
+          />
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function UserDetailsModal({ user, license, session, configs, onClose }) {
+  return (
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
+      <motion.div
+        className="luxx-surface w-full max-w-lg p-6"
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.96 }}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#8ebfff]">Account Details</p>
+        <h2 className="mt-2 text-2xl font-black text-white">{user.displayName || "Unnamed"}</h2>
+
+        <div className="mt-5 space-y-3 text-sm">
+          <DetailRow label="Username" value={user.email} />
+          <DetailRow label="Role" value={user.role} />
+          <DetailRow label="Status" value={user.isBanned ? "Banned" : "Active"} />
+          <DetailRow label="Discord Username" value={user.discordUsername || "Not linked"} />
+          <DetailRow label="Discord ID" value={user.discordId || "Not linked"} />
+          <DetailRow label="License Key" value={license?.keyPreview || user.licenseKeyString || "None"} />
+          <DetailRow label="Joined" value={new Date(user.createdAt).toLocaleString()} />
+          <DetailRow label="Last Login" value={user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleString() : "Never"} />
+          <DetailRow label="Script Connected" value={session?.online ? "Online" : "Offline"} />
+          {session?.online && (
+            <>
+              <DetailRow label="Game" value={session.game || "Unknown"} />
+              <DetailRow label="Executor" value={session.executor || "Unknown"} />
+            </>
+          )}
+          <DetailRow label="Configs Owned" value={String(configs.length)} />
+        </div>
+
+        <button onClick={onClose} className="luxx-button luxx-button-primary mt-6 w-full justify-center">
+          Close
+        </button>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function DetailRow({ label, value }) {
+  return (
+    <div className="flex items-center justify-between border-b border-white/5 pb-2">
+      <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#7f8ba6]">{label}</span>
+      <span className="font-mono text-[#d7e6ff]">{value}</span>
     </div>
   );
 }
