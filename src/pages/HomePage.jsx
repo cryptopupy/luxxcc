@@ -128,7 +128,7 @@ function ConnectScriptModal({ hasValidGame, status, onRefresh, onClose }) {
       onClick={onClose}
     >
       <motion.div
-        className="luxx-surface relative w-full max-w-lg overflow-hidden"
+        className="luxx-surface relative w-full max-w-2xl overflow-hidden"
         initial={{ opacity: 0, scale: 0.95, y: 12 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 12 }}
@@ -138,36 +138,36 @@ function ConnectScriptModal({ hasValidGame, status, onRefresh, onClose }) {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(58,107,194,0.16),_transparent_56%)]" />
         <button
           onClick={onClose}
-          className="luxx-icon-button absolute right-4 top-4 z-10"
+          className="luxx-icon-button absolute right-5 top-5 z-10"
         >
           <X size={16} />
         </button>
-        <div className="relative px-6 py-12 text-center sm:px-8 sm:py-16">
+        <div className="relative px-8 py-16 text-center sm:px-14 sm:py-20">
           {hasValidGame ? (
-            <div className="mx-auto flex h-10 items-center justify-center">
-              <svg className="h-12 w-12 text-[#38c278]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <div className="mx-auto flex h-12 items-center justify-center">
+              <svg className="h-14 w-14 text-[#38c278]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
           ) : (
             <SignalBars />
           )}
-          <h2 className="mt-6 text-[2.2rem] font-black uppercase tracking-[0.14em] text-white">
+          <h2 className="mt-8 text-[2.6rem] font-black uppercase tracking-[0.1em] text-white">
             {hasValidGame ? "Game Found" : "Verifying..."}
           </h2>
-          <div className="mx-auto mt-4 flex max-w-[360px] items-center gap-4">
+          <div className="mx-auto mt-6 flex max-w-[440px] items-center gap-4">
             <span className="h-px flex-1 bg-white/[0.07]" />
-            <p className="text-[11px] font-semibold uppercase tracking-[0.38em] text-[#808ba2]">
-              {hasValidGame ? status.gameFound : "Waiting for game...."}
+            <p className="whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.32em] text-[#808ba2]">
+              {hasValidGame ? status.gameFound : "Waiting for game"}
             </p>
             <span className="h-px flex-1 bg-white/[0.07]" />
           </div>
-          <p className="mx-auto mt-5 max-w-xl text-sm text-[#8994ab]">
+          <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-[#8994ab]">
             {hasValidGame
               ? `${status?.executor || "Unknown executor"} is online and the web panel is ready.`
-              : null}
+              : "Run the LUXX script in-game with your license key to establish a connection."}
           </p>
-          <button onClick={onRefresh} className="luxx-button mt-8">
+          <button onClick={onRefresh} className="luxx-button mt-10 px-10">
             Refresh Status
           </button>
         </div>
