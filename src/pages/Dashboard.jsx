@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { RefreshCcw, Save } from "lucide-react";
 import { motion } from "framer-motion";
@@ -16,25 +16,41 @@ export default function Dashboard() {
   const [configs, setConfigs] = useState([]);
   const [applyBusy, setApplyBusy] = useState(false);
   const [editableConfig, setEditableConfig] = useState("");
+  const [disconnected, setDisconnected] = useState(false);
 
-  const [initialLoadDone, setInitialLoadDone] = useState(false);
+  const initialLoadDone = useRef(false);
+  const missedBeats = useRef(0);
 
   const loadData = async () => {
-    setLoading(true);
+    if (!initialLoadDone.current) {
+      setLoading(true);
+    }
     try {
       const [homePayload, configPayload] = await Promise.all([api.get("/home"), api.get("/configs")]);
       setHome(homePayload.home);
       setConfigs(configPayload.myConfigs || []);
-      
+
+      // Only bail out to the home page after a few consecutive missed heartbeats,
+      // so a single stale/slow poll doesn't bounce the user out mid-edit.
+      if (!homePayload.home?.scriptConnected || !homePayload.home?.gameFound) {
+        missedBeats.current += 1;
+        if (missedBeats.current >= 3) {
+          setDisconnected(true);
+        }
+      } else {
+        missedBeats.current = 0;
+        setDisconnected(false);
+      }
+
       // Only update editable config on first load, or when explicitly resetting
-      if (!initialLoadDone) {
+      if (!initialLoadDone.current) {
         const newActiveConfig = configPayload.myConfigs.find((config) => config.isActive) || null;
         const newDashboardDefault = homePayload.home?.dashboardDefault || null;
         const newLuaContent = newActiveConfig?.luaContent || newDashboardDefault?.dashboardLuaContent;
         if (newLuaContent) {
           setEditableConfig(newLuaContent);
         }
-        setInitialLoadDone(true);
+        initialLoadDone.current = true;
       }
     } finally {
       setLoading(false);
@@ -117,7 +133,7 @@ export default function Dashboard() {
     );
   }
 
-  if (!home?.scriptConnected || !home?.gameFound) {
+  if (disconnected) {
     return <Navigate to="/" replace />;
   }
 
@@ -156,22 +172,38 @@ export default function Dashboard() {
       </motion.section>
 
       <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="rounded-[18px] border border-white/10 overflow-hidden">
-        <div 
-          className="editor-scrollbar"
+        <div
+          className="editor-scrollbar flex"
           style={{
             height: "70vh",
             maxHeight: "90vh",
             minHeight: "400px",
             overflowY: "auto",
             overflowX: "auto",
+            backgroundColor: "#131825",
           }}
         >
+          <div
+            aria-hidden="true"
+            className="select-none border-r border-white/[0.06] text-right font-mono text-xs leading-[1.72] text-[#4a5568]"
+            style={{
+              paddingTop: 24,
+              paddingBottom: 24,
+              paddingLeft: 16,
+              paddingRight: 12,
+              fontFamily: '"Fira Code", "Fira Mono", monospace',
+            }}
+          >
+            {editableConfig.split("\n").map((_, index) => (
+              <div key={index}>{index + 1}</div>
+            ))}
+          </div>
           <Editor
             value={editableConfig}
             onValueChange={(code) => setEditableConfig(code)}
             highlight={(code) => Prism.highlight(code, Prism.languages.lua, "lua")}
             padding={24}
-            className="font-mono text-xs leading-[1.72]"
+            className="flex-1 font-mono text-xs leading-[1.72]"
             style={{
               backgroundColor: "#131825",
               fontFamily: '"Fira Code", "Fira Mono", monospace',
