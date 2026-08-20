@@ -1,3 +1,5 @@
+## Hello it's rdk i would make this src public bc luxx is discontinued and this website is ass and vibecoded use as u please idc but credit me pls
+
 # Luxx Web
 
 Local Luxx web panel with:
